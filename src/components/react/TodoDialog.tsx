@@ -91,7 +91,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
   return (
     <dialog
       ref={dialogRef}
-      className="fixed z-10 inset-0 overflow-y-auto bg-white w-full h-full"
+      className="fixed z-10 inset-0 overflow-y-auto bg-white w-full h-full rounded-xl"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
