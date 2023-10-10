@@ -7,6 +7,8 @@ import {
 } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { enGB } from "date-fns/locale";
+import Markdown from "react-markdown";
+
 import { updateTodo, $filterType } from "../../stores/store";
 import type { Todo } from "../../types/TodoType";
 import {
@@ -61,6 +63,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     updateTodo({ ...todo, description: todoDescription });
+    todo.description = todoDescription;
     setShowDescriptionEditor(false);
   };
 
@@ -135,10 +138,10 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
               <button
                 onClick={() => setShowDescriptionEditor(true)}
-                className="flex justify-start cursor-pointer rounded max-w-md"
+                className="cursor-pointer rounded max-w-md text-left"
                 id="todoDescription"
               >
-                {todo.description}
+                <Markdown className="prose border px-2 py-2 rounded">{todo.description}</Markdown>
               </button>
             </div>
           </>
