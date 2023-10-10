@@ -1,6 +1,5 @@
 ## I want this!
 
-- Make input max width of screen on mobile
 
 ## Maybes
 - Keyboard shortcuts

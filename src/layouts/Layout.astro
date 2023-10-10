@@ -1,42 +1,32 @@
 ---
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
-import { ListSwitcher } from "../components/react/ListSwitcher";
+
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta
-			name="description"
-			content="Cool Todo Manager"
-		/>
-		<meta
-			name="viewport"
-			content="width=device-width"
-		/>
-		<link
-			rel="icon"
-			type="image/svg+xml"
-			href="/favicon.svg"
-		/>
-		<title>{title}</title>
-	</head>
-	<body
-		class="grid grid-cols-1 grid-rows-[auto_1fr_auto] mx-auto min-h-[100vh] px-4 py-2 gap-y-8"
-	>
-		<header class="border-b">
-			<h1>Cool Todo Manager</h1>
-		</header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Cool Todo Manager" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body
+    class="grid grid-cols-1 grid-rows-[auto_1fr_auto] mx-auto min-h-[100vh] px-4 py-2 gap-y-8"
+  >
+    <header class="border-b">
+      <h1>Cool Todo Manager</h1>
+    </header>
 
-		<slot />
+    <slot />
 
-		<footer class="border-t hidden">
-			<p>Cool Todo Manager</p>
-		</footer>
-	</body>
+    <footer class="border-t hidden">
+      <p>Cool Todo Manager</p>
+    </footer>
+  </body>
 </html>
