@@ -41,7 +41,7 @@ export const TodoInput: FC = () => {
 
   return (
     <form
-      className="flex justify-between items-start gap-x-8 max-w-xl"
+      className="flex flex-col sm:flex-row justify-between items-start gap-x-8 max-w-xl"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col sm:flex-row flex-wrap gap-x-4 gap-y-4">
@@ -49,22 +49,20 @@ export const TodoInput: FC = () => {
           value={inputValue}
           placeholder="Add a todo"
           onChange={(event) => setInputValue(event.target.value)}
-          className="border px-4 py-2 rounded-lg min-w-[400px]"
+          className="border px-4 py-2 rounded-lg sm:min-w-[400px]"
         ></textarea>
 
-        <div className="flex items-center gap-x-4 relative group">
+        <div className="flex items-center gap-x-4 relative group focus-within:ring-4 focus-within:ring-blue-500 rounded-lg">
           <label
             htmlFor="today"
             title="Add to today's todos"
             className={`
-                        select-none cursor-pointer px-2 py-0.5 outline outline-bg-gray-800 rounded-lg flex justify-center gap-x-1 items-center group-focus:ring group-focus:ring-blue-400 min-w-[100px]
-
-                        ${
-                          toBeDoneToday &&
-                          "bg-gray-800 outline outline-gray-900 text-white"
-                        }
-
-                    `}
+                select-none cursor-pointer px-2 py-0.5 outline outline-bg-gray-800 rounded-lg flex justify-center gap-x-1 items-center group-focus:ring group-focus:ring-blue-400 min-w-[100px]
+                ${
+                  toBeDoneToday &&
+                  "bg-gray-800 outline outline-gray-900 text-white"
+                }
+            `}
           >
             Today
             {!toBeDoneToday ? <span>?</span> : <span>✓</span>}
@@ -83,7 +81,7 @@ export const TodoInput: FC = () => {
         type="submit"
         title="Add a todo"
         className="
-          border-2 border-black rounded py-0 px-4 mt-3 hover:bg-black hover:text-white h-10
+          border-2 border-black rounded py-0 px-4 mt-0 hover:bg-black hover:text-white h-10
           "
       >
         Add
