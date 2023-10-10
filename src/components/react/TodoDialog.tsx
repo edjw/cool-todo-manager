@@ -64,7 +64,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
     setShowDescriptionEditor(false);
   };
 
-  const timeAgo = formatDistanceToNow(todo.dateCreated, {
+  const createdTimeAgo = formatDistanceToNow(todo.dateCreated, {
     addSuffix: false,
     locale: enGB,
   });
@@ -100,7 +100,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
               </p>
             )}
 
-          <p className="text-sm text-gray-700">{timeAgo} old</p>
+          <p className="text-sm text-gray-700">{createdTimeAgo} old</p>
           <div className="flex space-x-4 py-2">
             <MarkAsDoneButton
               name="MarkAsDoneButton"

@@ -4,7 +4,7 @@ export type Todo = {
     description: string;
     dateCreated: Date;
 	isDone: boolean;
-	dateDeleted?: Date;
+	dateDeleted: Date;
 	dateMarkedAsToBeDoneToday?: Date;
 	numberOfTimesMarkedAsToBeDoneToday: number;
 };
