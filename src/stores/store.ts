@@ -106,6 +106,17 @@ export const markTodoAsDone = action($todos, "markTodoAsDone", (store, id) => {
 	store.set(updatedTodos);
 });
 
+export const unmarkTodoAsDone = action($todos, "markTodoAsDone", (store, id) => {
+	const prevTodos = store.get();
+	const updatedTodos = prevTodos.map((todo) => {
+		if (todo.id === id) {
+			return { ...todo, isDone: false };
+		}
+		return todo;
+	});
+	store.set(updatedTodos);
+});
+
 export const moveTodoToBacklog = action(
 	$todos,
 	"moveTodoToBacklog",

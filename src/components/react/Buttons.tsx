@@ -1,6 +1,6 @@
 import { getDate } from "date-fns";
 import type { FC } from "react";
-import { markTodoAsDone, softDeleteTodo, moveTodoToBacklog, moveTodoToToday, hardDeleteAllDeletedTodos, SoftDeleteAllDoneTodos, hardDeleteSingleDeletedTodo } from "../../stores/store";
+import { markTodoAsDone, softDeleteTodo, moveTodoToBacklog, moveTodoToToday, hardDeleteAllDeletedTodos, SoftDeleteAllDoneTodos, hardDeleteSingleDeletedTodo, unmarkTodoAsDone } from "../../stores/store";
 
 export
     const HardDeleteAllDeletedTodosButton: FC = () => {
@@ -26,8 +26,6 @@ export
 export
     const SoftDeleteAllDoneTodosButton: FC = () => {
 
-
-
         return (
             <button
                 onClick={SoftDeleteAllDoneTodos}
@@ -51,23 +49,21 @@ export const SoftDeleteTodoButton: FC<{
 
         );
 
-        const softDeleteTodo = (todoId: string) => {
+        const handleSoftDelete = () => {
             if (onClose) onClose();
             softDeleteTodo(
                 todoId
             );
         };
 
-
         return (
             <button
-                onClick={() => softDeleteTodo(
-                    todoId
-                )}
+                onClick={() => handleSoftDelete()}
                 title="Delete"
-                className="hover:bg-gray-200 p-2 rounded-full"
+                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
             >
                 <TrashSVG />
+                <span className="sr-only">Delete</span>
             </button>
         );
     };
@@ -104,6 +100,7 @@ export const HardDeleteSingleDeletedTodoButton: FC<{
             className="hover:bg-gray-200 p-2 rounded-full"
         >
             <TrashSVG />
+            <span className="sr-only">Destroy</span>
         </button>
     );
 };
@@ -111,7 +108,8 @@ export const HardDeleteSingleDeletedTodoButton: FC<{
 export const MarkAsDoneButton: FC<{
     todoId: string;
     onClose?: () => void;
-}> = ({ todoId, onClose }) => {
+    name: string;
+}> = ({ todoId, onClose, name }) => {
 
     const handleMarkAsDone = () => {
         if (onClose) onClose();
@@ -132,10 +130,44 @@ export const MarkAsDoneButton: FC<{
             onClick={() =>
                 handleMarkAsDone()
             }
-            className="hover:bg-gray-200 p-2 rounded-full"
+            className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
             title="Mark as Done"
         >
             <CheckmarkSVG />
+            <span className="sr-only">Done</span>
+        </button>
+    );
+}
+
+
+export const UnmarkAsDoneButton: FC<{
+    todoId: string;
+    onClose?: () => void;
+    name: string;
+}> = ({ todoId, onClose, name }) => {
+
+    const handleUnmarkAsDone = () => {
+        if (onClose) onClose();
+        unmarkTodoAsDone(todoId);
+    }
+
+
+    const BackArrowSVG: FC = () => (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+        </svg>
+    );
+
+    return (
+        <button
+            onClick={() =>
+                handleUnmarkAsDone()
+            }
+            className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+            title="Mark as not done"
+        >
+            <BackArrowSVG />
+            <span className="sr-only">Not Done</span>
         </button>
     );
 }
@@ -175,10 +207,11 @@ export const MoveToTodayButton: FC<{
         return (
             <button
                 onClick={() => handleMoveToToday()}
-                className="hover:bg-gray-200 p-2 rounded-full"
+                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
                 title="Move to Today"
             >
                 <MoveToTodaySVG />
+                <span className="sr-only">Today</span>
             </button>
         );
     };
@@ -211,10 +244,11 @@ export const MoveToBacklogButton: FC<{
         return (
             <button
                 onClick={() => handleMoveToBacklog()}
-                className="hover:bg-gray-200 p-2 rounded-full"
+                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
                 title="Move to Backlog"
             >
                 <MoveToBacklogSVG />
+                <span className="sr-only">Backlog</span>
             </button>
         )
 

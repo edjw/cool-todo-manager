@@ -45,49 +45,51 @@ export const TodoInput: FC = () => {
     };
 
     return (
-        <form className="flex gap-x-8 items-start" onSubmit={handleSubmit}>
-            <div className="flex flex-col sm:flex-row gap-x-4 gap-y-4">
-                <input
-                    type="text"
-                    value={inputValue}
-                    placeholder="Add a todo"
-                    onChange={(event) => setInputValue(event.target.value)}
-                    className="border px-4 py-2 rounded-lg min-w-[300px]"
-                />
-                <div className="flex items-center gap-x-4 relative group">
+        <div>
+            <form className="flex gap-x-8 items-start" onSubmit={handleSubmit}>
+                <div className="flex flex-col sm:flex-row gap-x-4 gap-y-4">
+                    <input
+                        type="text"
+                        value={inputValue}
+                        placeholder="Add a todo"
+                        onChange={(event) => setInputValue(event.target.value)}
+                        className="border px-4 py-2 rounded-lg min-w-[300px]"
+                    />
+                    <div className="flex items-center gap-x-4 relative group">
 
-                    <label htmlFor="today" className={
-                        `
+                        <label htmlFor="today" className={
+                            `
                         select-none cursor-pointer px-4 py-1 outline outline-bg-gray-800 rounded-lg flex justify-center gap-x-1 items-center group-focus:ring group-focus:ring-blue-400
 
                         ${toBeDoneToday && "bg-gray-800 outline outline-gray-900 text-white"}
 
                     `}>
-                        Today
-                        {
-                            !toBeDoneToday ? (
-                                <span>
-                                    ?
-                                </span>)
-                                : (
+                            Today
+                            {
+                                !toBeDoneToday ? (
                                     <span>
-                                        ✓
-                                    </span>
-                                )
-                        }
+                                        ?
+                                    </span>)
+                                    : (
+                                        <span>
+                                            ✓
+                                        </span>
+                                    )
+                            }
 
-                        <input
-                            type="checkbox"
-                            name="today"
-                            id="today"
-                            className="opacity-0 absolute"
-                            checked={toBeDoneToday}
-                            onChange={() => setToBeDoneToday(!toBeDoneToday)}
-                        />
-                    </label>
+                            <input
+                                type="checkbox"
+                                name="today"
+                                id="today"
+                                className="opacity-0 absolute"
+                                checked={toBeDoneToday}
+                                onChange={() => setToBeDoneToday(!toBeDoneToday)}
+                            />
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" className="border-2 border-black rounded py-2 px-4 -mt-px">Add</button>
-        </form >
+                <button type="submit" className="border-2 border-black rounded py-2 px-4 -mt-px">Add</button>
+            </form >
+        </div>
     );
 };

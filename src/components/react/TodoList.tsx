@@ -1,9 +1,10 @@
-import type { FC } from "react";
-import { MarkAsDoneButton, SoftDeleteTodoButton, MoveToBacklogButton, MoveToTodayButton, HardDeleteAllDeletedTodosButton, SoftDeleteAllDoneTodosButton, HardDeleteSingleDeletedTodoButton } from "./Buttons";
-import type { Todo } from "./TodoType";
-import { useStore } from '@nanostores/react';
-import { $backlogTodos, $doneTodos, $todayTodos, $filterType, $allTodos, $deletedTodos } from "../../stores/store";
 import { useRef, useState } from "react";
+import type { FC } from "react";
+import { titleCase } from "title-case";
+import { useStore } from '@nanostores/react';
+import { MarkAsDoneButton, SoftDeleteTodoButton, MoveToBacklogButton, MoveToTodayButton, HardDeleteAllDeletedTodosButton, SoftDeleteAllDoneTodosButton, HardDeleteSingleDeletedTodoButton, UnmarkAsDoneButton } from "./Buttons";
+import type { Todo } from "./TodoType";
+import { $backlogTodos, $doneTodos, $todayTodos, $filterType, $allTodos, $deletedTodos } from "../../stores/store";
 import { TodoDialog } from "./TodoDialog";
 
 export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
@@ -22,17 +23,19 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
             <HardDeleteSingleDeletedTodoButton todoId={todoId} />
         ],
         "backlog": [
-            <MarkAsDoneButton todoId={todoId} />,
+            <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
             <MoveToTodayButton todoId={todoId} />,
             <SoftDeleteTodoButton todoId={todoId} />
         ],
         "today": [
-            <MarkAsDoneButton todoId={todoId} />,
+            <UnmarkAsDoneButton name="UnmarkAsDoneButton" todoId={todoId} />,
+            <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
             <MoveToBacklogButton todoId={todoId} />,
             <SoftDeleteTodoButton todoId={todoId} />
         ],
         "all": [
-            <MarkAsDoneButton todoId={todoId} />,
+            <UnmarkAsDoneButton name="UnmarkAsDoneButton" todoId={todoId} />,
+            <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
             <MoveToBacklogButton todoId={todoId} />,
             <MoveToTodayButton todoId={todoId} />,
             <SoftDeleteTodoButton todoId={todoId} />
@@ -43,11 +46,23 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
 
     return (
         <>
-            {buttons.map((button, index) => (
-                <span key={index}>
-                    {button}
-                </span>
-            ))}
+            {buttons.map((button, index) => {
+                if (button.props.name === "MarkAsDoneButton" && todo.isDone) {
+                    return null;
+                }
+
+                if (button.props.name === "UnmarkAsDoneButton" && !todo.isDone) {
+                    return null;
+                }
+
+                return (
+                    <span key={index}>
+                        {button}
+                    </span>
+                )
+            }
+
+            )}
         </>
     );
 };
@@ -93,6 +108,8 @@ export const TodoList: FC = () => {
         todos = deletedTodos;
     }
 
+
+    // Logging out the current filter's todos
     console.log(todos);
 
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -118,26 +135,36 @@ export const TodoList: FC = () => {
 
             }
 
-            {
-                todos.length === 0 &&
-                <p>
-                    Nothing here
-                </p>
+            <div className="flex flex-col gap-y-8">
 
-            }
+                <h2 className="text-2xl font-semibold pb-1 border-b max-w-xs">
+                    {titleCase(filterType)}
+                </h2>
 
-            <ul className="flex flex-col gap-y-8 max-w-xl">
-                {todos.map((todo) => (
-                    <TodoItem key={todo.id} todo={todo} openDialogWithTodo={openDialogWithTodo} />
-                ))}
-            </ul>
+                {
+                    todos.length === 0 &&
+                    <p>
+                        Nothing here
+                    </p>
+
+                }
 
 
 
-            {(filterType === "done" || filterType === "all" && doneTodos.length > 0) && <SoftDeleteAllDoneTodosButton />}
+                <ul className="flex flex-col gap-y-12 max-w-3xl">
+                    {todos.map((todo) => (
+                        <TodoItem key={todo.id} todo={todo} openDialogWithTodo={openDialogWithTodo} />
+                    ))}
+                </ul>
 
-            {filterType === "deleted" && deletedTodos.length > 0 &&
-                <HardDeleteAllDeletedTodosButton />}
+
+
+                {(filterType === "done" || filterType === "all" && doneTodos.length > 0) && <SoftDeleteAllDoneTodosButton />}
+
+                {filterType === "deleted" && deletedTodos.length > 0 &&
+                    <HardDeleteAllDeletedTodosButton />}
+
+            </div>
         </>
     );
 };
