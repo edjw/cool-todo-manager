@@ -1,6 +1,7 @@
 import { computed, atom, action } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
-import type { Todo } from "../components/react/TodoType";
+import type { Todo } from "../types/TodoType";
+import type { filterTypes } from "../types/filterTypes";
 import { isToday } from "date-fns";
 
 export const $todos = persistentAtom<Todo[]>("todos", [], {
@@ -84,7 +85,6 @@ export const hardDeleteTodo = action(
 	}
 );
 
-type filterTypes = "all" | "today" | "backlog" | "done" | "deleted";
 export const $filterType = atom<filterTypes>("today");
 
 export const setFilterType = action(

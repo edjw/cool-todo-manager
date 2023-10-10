@@ -1,8 +1,26 @@
 import { useStore } from '@nanostores/react';
 
 import { $todos, setFilterType, $filterType, $backlogTodos, $allTodos, $todayTodos, $doneTodos, $deletedTodos } from "../../stores/store";
+import type { filterTypes } from "../../types/filterTypes";
 import { $isMenuOpen, toggleMenu } from '../../stores/uiStateStore';
-import { is } from 'date-fns/locale';
+
+
+type MenuButtonProps = {
+    label: string;
+    count: number;
+    active: boolean;
+    onClick: () => void;
+};
+
+const MenuButton: FC<MenuButtonProps> = ({ label, count, active, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`rounded px-8 py-2 ${active ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
+    >
+        {label} <span className="text-sm">({count})</span>
+    </button>
+);
+
 
 
 export const ListSwitcher = () => {
@@ -17,88 +35,97 @@ export const ListSwitcher = () => {
     const filterType = useStore($filterType);
     const isMenuOpen = useStore($isMenuOpen);
 
+    const handleMenuButtonClick = (
+        filterType: filterTypes
+    ) => {
+        toggleMenu();
+        setFilterType(filterType);
+    }
+
 
     return (
         <>
-            <button className="
-            sm:hidden
-            hover:bg-gray-200
-            "
-                onClick={() => toggleMenu()}
-
-            >
-                {
-                    isMenuOpen ?
-                        // <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-                        //     viewBox="0 0 24 24" stroke="currentColor"
-                        //     onClick={() => toggleMenu()}
-                        // >
-                        //     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        //         d="M6 18L18 6M6 6l12 12" />
-                        // </svg>
-
-                        <>
-                            Close
-                        </>
-
-                        :
-                        <>
-                            Open
-                        </>
-                    // <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
-                    //     viewBox="0 0 24 24" stroke="currentColor"
-                    //     onClick={() => toggleMenu()}
-                    // >
-                    //     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    //         d="M4 6h16M4 12h16M4 18h16" />
-                    // </svg>
-                }
-            </button>
-
-            <div className={`flex-col gap-y-4 ${isMenuOpen ? "flex" : "hidden sm:flex"}`}>
-                <button
-                    onClick={() => setFilterType("today")}
-                    className={`rounded px-8 py-2 ${filterType === "today" ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
+            <div className={`
+            flex flex-col-reverse sm:flex-col gap-y-4 fixed sm:relative bottom-4 left-2 right-2
+            ${isMenuOpen && "bg-white min-h-[100vh] z-10"}
+            `}>
+                <button className="flex sm:hidden self-end items-center justify-center hover:bg-gray-200 border rounded py-2 px-2 max-w-[50px] w-full"
+                    onClick={() => toggleMenu()}
+                    title={isMenuOpen ? "Close Menu" : "Open Menu"}
                 >
-                    Today <span className="text-sm">({todayTodos.length})</span>
+                    {
+                        isMenuOpen ?
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+
+                                <span className="sr-only">Close Menu</span>
+                            </>
+                            :
+                            <>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <span className="sr-only">Open Menu</span>
+                            </>
+
+                    }
                 </button>
 
-                <button
-                    onClick={() => setFilterType("backlog")}
-                    className={`rounded px-8 py-2 ${filterType === "backlog" ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
-                >
-                    Backlog <span className="text-sm">({backlogTodos.length})</span>
-                </button >
+                <div className={`flex-col gap-y-4 ${isMenuOpen ? "flex" : "hidden sm:flex"}`}>
+
+                    <MenuButton
+                        label="Today"
+                        count={todayTodos.length}
+                        active={filterType === "today"}
+                        onClick={() => handleMenuButtonClick("today")}
+                    />
+
+                    <MenuButton
+                        label="Backlog"
+                        count={backlogTodos.length}
+                        active={filterType === "backlog"}
+                        onClick={() => handleMenuButtonClick("backlog")}
+                    />
 
 
+                    <MenuButton
+                        label="All"
+                        count={allTodos.length}
+                        active={filterType === "all"}
+                        onClick={() => handleMenuButtonClick("all")}
+                    />
 
-                <button
-                    onClick={() => setFilterType("all")}
-                    className={`rounded px-8 py-2 ${filterType === "all" ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
-                >
-                    All <span className="text-sm">({allTodos.length})</span>
-                </button >
+                    {
+                        todos.some(todo => todo.isDone) &&
 
-                {
-                    todos.some(todo => todo.isDone) &&
-                    <button
-                        onClick={() => setFilterType("done")}
-                        className={`rounded px-8 py-2 ${filterType === "done" ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
-                    >
-                        Done <span className="text-sm">({doneTodos.length})</span>
-                    </button>
-                }
-                {
-                    todos.some(todo => todo.dateDeleted) &&
-                    <button
-                        onClick={() => setFilterType("deleted")}
-                        className={`rounded px-8 py-2 ${filterType === "deleted" ? "bg-black text-white" : "bg-white text-black border-2 border-black"}`}
-                    >
-                        Deleted <span className="text-sm">({deletedTodos.length})</span>
-                    </button >
-                }
+                        <MenuButton
+                            label="Done"
+                            count={doneTodos.length}
+                            active={filterType === "done"}
+                            onClick={() => handleMenuButtonClick("done")}
+                        />
+                    }
 
+                    {
+                        todos.some(todo => todo.dateDeleted) &&
 
+                        <MenuButton
+                            label="Deleted"
+                            count={deletedTodos.length}
+                            active={filterType === "deleted"}
+                            onClick={() => handleMenuButtonClick("deleted")}
+                        />
+                    }
+
+                </div>
             </div >
         </>
     );

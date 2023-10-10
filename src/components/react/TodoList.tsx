@@ -2,8 +2,12 @@ import { useRef, useState } from "react";
 import type { FC } from "react";
 import { titleCase } from "title-case";
 import { useStore } from '@nanostores/react';
+import { formatDistanceToNow } from 'date-fns'
+import { enGB } from 'date-fns/locale';
+
+
 import { MarkAsDoneButton, SoftDeleteTodoButton, MoveToBacklogButton, MoveToTodayButton, HardDeleteAllDeletedTodosButton, SoftDeleteAllDoneTodosButton, HardDeleteSingleDeletedTodoButton, UnmarkAsDoneButton } from "./Buttons";
-import type { Todo } from "./TodoType";
+import type { Todo } from "../../types/TodoType";
 import { $backlogTodos, $doneTodos, $todayTodos, $filterType, $allTodos, $deletedTodos } from "../../stores/store";
 import { TodoDialog } from "./TodoDialog";
 
@@ -71,11 +75,29 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
 const TodoItem: FC<{ todo: Todo, openDialogWithTodo: (todo: Todo) => void }> = ({ todo, openDialogWithTodo }) => {
 
     const todoTitleElement = todo.isDone ? <s>{todo.title}</s> : todo.title;
+
+    const timeAgo = formatDistanceToNow(todo.dateCreated,
+        {
+            addSuffix: false,
+            locale: enGB
+        });
+
     return (
         <li key={todo.id} className="flex gap-x-4 items-center justify-between">
-            <button onClick={() => openDialogWithTodo(todo)} className={`flex w-full justify-start ${todo.isDone ? "line-through" : ""}`}>
-                {todoTitleElement}
-            </button>
+            <div className="w-full border">
+                <button onClick={() => openDialogWithTodo(todo)} className={`flex flex-col gap-y-4 w-full justify-start ${todo.isDone ? "line-through" : ""}`}>
+                    {todoTitleElement}
+
+                    {
+                        !todo.isDone &&
+
+                        <span className="text-xs">
+                            {timeAgo} old
+                        </span>
+                    }
+                </button>
+
+            </div>
             <div className="flex gap-x-4">
                 <TodoActionButtons todo={todo} />
             </div>

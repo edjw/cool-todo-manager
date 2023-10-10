@@ -1,6 +1,6 @@
 import { type RefObject, type FC, useState, useEffect, type FormEvent } from "react";
 import { updateTodo } from "../../stores/store";
-import type { Todo } from "./TodoType";
+import type { Todo } from "../../types/TodoType";
 import { HardDeleteSingleDeletedTodoButton, MarkAsDoneButton, MoveToBacklogButton, MoveToTodayButton, SoftDeleteTodoButton } from "./Buttons";
 
 type TodoDialogProps = {

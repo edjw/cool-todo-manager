@@ -1,0 +1,1 @@
+export type filterTypes = "all" | "today" | "backlog" | "done" | "deleted";

@@ -1,6 +1,4 @@
-make a todo manager
-
-
+## I want this!
 
 
 - keep track of how many times they go back to the backlog and show that number or some graphical representation of it
@@ -8,14 +6,33 @@ make a todo manager
 
 
 
+Make input max width of screen on mobile
 
-- group tasks into projects
+
+Add relative date of how long since date created. Can I do this in a computed store? Maybe just do it in ui for now
+
+Some way of saying how many times it’s been put into today
+
+
+
+
+## Maybes
+- Keyboard shortcuts
+- Sort tasks by date created, number of times added to today, or number of times added to backlog
+- Group tasks into projects
+- Maybe drag and drop to reorder tasks
+- Print? <https://github.com/gregnb/react-to-print>
+- add #url fragment-based routing
+
+
+
+## Nice-to-haves
 
 - some api to add tasks from via http so can have shortcuts on ios for quick add to backlog
--
+- maybe needs login eventually to allow for multiple devices
+- database too maybe but localstorage is fine for now
 
-maybe needs login eventually to allow for multiple devices
-database too or maybe theres' a way to do it without a database like
 
-single user only
+## Not changing these limitations
+- single user only
 
