@@ -49,7 +49,7 @@ export const TodoInput: FC = () => {
           value={inputValue}
           placeholder="Add a todo"
           onChange={(event) => setInputValue(event.target.value)}
-          className="border px-4 py-2 rounded-lg w-[300px] sm:min-w-[400px]"
+          className="border px-4 py-2 rounded-lg w-[300px] md:min-w-[400px] lg:min-w-[500px] xl:min-w-[600px]"
         ></textarea>
 
         <div className="flex items-center gap-x-4 relative group focus-within:ring-4 focus-within:ring-blue-500 rounded-lg w-fit">
