@@ -84,7 +84,7 @@ export const hardDeleteTodo = action(
 );
 
 type filterTypes = "all" | "today" | "backlog" | "done" | "deleted";
-export const $filterType = atom<filterTypes>("all");
+export const $filterType = atom<filterTypes>("today");
 
 export const setFilterType = action(
 	$filterType,
