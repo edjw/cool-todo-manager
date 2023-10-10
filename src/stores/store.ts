@@ -1,6 +1,5 @@
 import { computed, atom, action } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
-import { getFilteredTodos } from "../functions/getFilteredTodos";
 import type { Todo } from "../components/react/TodoType";
 
 export const $todos = persistentAtom<Todo[]>("todos", [], {
@@ -16,6 +15,10 @@ export const $todos = persistentAtom<Todo[]>("todos", [], {
 			if (newTodo.dateCreated) {
 				newTodo.dateCreated = new Date(newTodo.dateCreated);
 			}
+			if (newTodo.dateDeleted) {
+				newTodo.dateDeleted = new Date(newTodo.dateDeleted);
+			}
+
 			return newTodo;
 		}),
 });
@@ -55,6 +58,21 @@ export const softDeleteTodo = action(
 	}
 );
 
+export const SoftDeleteAllDoneTodos = action(
+	$todos,
+	"softDeleteDoneTodos",
+	(store) => {
+		const prevTodos = store.get();
+		const updatedTodos = prevTodos.map((todo) => {
+			if (todo.isDone) {
+				return { ...todo, dateDeleted: new Date() };
+			}
+			return todo;
+		});
+		store.set(updatedTodos);
+	}
+);
+
 export const hardDeleteTodo = action(
 	$todos,
 	"deleteTodo",
@@ -65,25 +83,13 @@ export const hardDeleteTodo = action(
 	}
 );
 
-// export const $inputValue = persistentAtom<string>("inputValue", "", {
-// 	encode: String,
-// 	decode: String,
-// });
-
-// export const setInputValue = action(
-// 	$inputValue,
-// 	"setInputValue",
-// 	(store, value: string) => {
-// 		store.set(value);
-// 	}
-// );
-
-export const $filterType = atom<string>("all");
+type filterTypes = "all" | "today" | "backlog" | "done" | "deleted";
+export const $filterType = atom<filterTypes>("all");
 
 export const setFilterType = action(
 	$filterType,
 	"setFilterType",
-	(store, value: string) => {
+	(store, value: filterTypes) => {
 		store.set(value);
 	}
 );
@@ -106,7 +112,12 @@ export const moveTodoToBacklog = action(
 		const prevTodos = store.get();
 		const updatedTodos = prevTodos.map((todo) => {
 			if (todo.id === id) {
-				return { ...todo, dateMarkedAsToBeDoneToday: undefined };
+				return {
+					...todo,
+					isDone: false,
+					dateDeleted: undefined,
+					dateMarkedAsToBeDoneToday: undefined,
+				};
 			}
 			return todo;
 		});
@@ -121,7 +132,12 @@ export const moveTodoToToday = action(
 		const prevTodos = store.get();
 		const updatedTodos = prevTodos.map((todo) => {
 			if (todo.id === id) {
-				return { ...todo, dateMarkedAsToBeDoneToday: new Date() };
+				return {
+					...todo,
+					isDone: false,
+					dateDeleted: undefined,
+					dateMarkedAsToBeDoneToday: new Date(),
+				};
 			}
 			return todo;
 		});
@@ -129,12 +145,24 @@ export const moveTodoToToday = action(
 	}
 );
 
-export const hardDeleteDoneTodos = action(
+export const hardDeleteAllDeletedTodos = action(
 	$todos,
 	"hardDeleteDoneTodos",
 	(store) => {
 		const prevTodos = store.get();
-		const updatedTodos = prevTodos.filter((todo) => !todo.isDone);
+		const updatedTodos = prevTodos.filter((todo) => !todo.dateDeleted);
+		store.set(updatedTodos);
+	}
+);
+
+export const hardDeleteSingleDeletedTodo = action(
+	$todos,
+	"hardDeleteSingleDeletedTodo",
+	(store, id) => {
+		const prevTodos = store.get();
+		const updatedTodos = prevTodos.filter((todo) => {
+			return !(todo.id === id && todo.dateDeleted !== undefined);
+		});
 		store.set(updatedTodos);
 	}
 );
@@ -149,6 +177,7 @@ export const $allTodos = computed($todos, (todos) => {
 	};
 
 	return todos
+		.filter((todo) => !todo.dateDeleted)
 		.map((todo) => ({ ...todo, dateCreated: new Date(todo.dateCreated) }))
 		.sort(sortFunc);
 });
@@ -168,4 +197,8 @@ export const $backlogTodos = computed($todos, (todos) => {
 		(todo) =>
 			!todo.isDone && !todo.dateMarkedAsToBeDoneToday && !todo.dateDeleted
 	);
+});
+
+export const $deletedTodos = computed($todos, (todos) => {
+	return todos.filter((todo) => todo.dateDeleted);
 });

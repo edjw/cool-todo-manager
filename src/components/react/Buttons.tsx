@@ -1,23 +1,86 @@
-import { getDate, isToday } from "date-fns";
-import type { FC, Dispatch, SetStateAction } from "react";
-import type { Todo } from "./TodoType";
-import { hardDeleteDoneTodos, markTodoAsDone, softDeleteTodo } from "../../stores/store";
+import { getDate } from "date-fns";
+import type { FC } from "react";
+import { markTodoAsDone, softDeleteTodo, moveTodoToBacklog, moveTodoToToday, hardDeleteAllDeletedTodos, SoftDeleteAllDoneTodos, hardDeleteSingleDeletedTodo } from "../../stores/store";
 
 export
-    const DeleteAllDoneTodosButton: FC = () => {
+    const HardDeleteAllDeletedTodosButton: FC = () => {
+
+        const doubleCheck = () => {
+            const confirmation = confirm("Are you sure you want to delete all deleted todos? This action cannot be undone.");
+            return confirmation;
+        };
 
         return (
             <button
-                onClick={hardDeleteDoneTodos}
-                className='hover:bg-gray-200 p-2 border border-gray-200 rounded max-w-[200px]'
-            >Delete All Done Tasks</button>
+                onClick={() => {
+                    if (doubleCheck()) {
+                        hardDeleteAllDeletedTodos();
+                    }
+                }}
+
+                className='hover:bg-gray-200 p-2 border border-gray-200 rounded max-w-[300px]'
+            >Destroy All Deleted Todos</button>
         )
-    }
+    };
+
+export
+    const SoftDeleteAllDoneTodosButton: FC = () => {
+
+
+
+        return (
+            <button
+                onClick={SoftDeleteAllDoneTodos}
+                className='hover:bg-gray-200 p-2 border border-gray-200 rounded max-w-[200px]'
+            >Delete All Done Todos</button>
+        )
+    };
 
 
 export const SoftDeleteTodoButton: FC<{
     todoId: string;
+    onClose?: () => void;
+}> = ({ todoId,
+    onClose
+}) => {
+
+        const TrashSVG: FC = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+
+        );
+
+        const softDeleteTodo = (todoId: string) => {
+            if (onClose) onClose();
+            softDeleteTodo(
+                todoId
+            );
+        };
+
+
+        return (
+            <button
+                onClick={() => softDeleteTodo(
+                    todoId
+                )}
+                title="Delete"
+                className="hover:bg-gray-200 p-2 rounded-full"
+            >
+                <TrashSVG />
+            </button>
+        );
+    };
+
+
+export const HardDeleteSingleDeletedTodoButton: FC<{
+    todoId: string;
 }> = ({ todoId }) => {
+
+    const doubleCheck = () => {
+        const confirmation = confirm("Are you sure you want to delete this todo? This action cannot be undone.");
+        return confirmation;
+    };
 
     const TrashSVG: FC = () => (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -29,8 +92,15 @@ export const SoftDeleteTodoButton: FC<{
 
     return (
         <button
-            onClick={() => softDeleteTodo(todoId)}
-            title="Delete"
+            onClick={() => {
+                if (doubleCheck()) {
+                    hardDeleteSingleDeletedTodo(
+                        todoId
+                    );
+                }
+            }
+            }
+            title="Destroy this todo"
             className="hover:bg-gray-200 p-2 rounded-full"
         >
             <TrashSVG />
@@ -40,8 +110,13 @@ export const SoftDeleteTodoButton: FC<{
 
 export const MarkAsDoneButton: FC<{
     todoId: string;
-}> = ({ todoId }) => {
+    onClose?: () => void;
+}> = ({ todoId, onClose }) => {
 
+    const handleMarkAsDone = () => {
+        if (onClose) onClose();
+        markTodoAsDone(todoId);
+    }
 
 
     const CheckmarkSVG: FC = () => (
@@ -54,7 +129,9 @@ export const MarkAsDoneButton: FC<{
 
     return (
         <button
-            onClick={() => markTodoAsDone(todoId)}
+            onClick={() =>
+                handleMarkAsDone()
+            }
             className="hover:bg-gray-200 p-2 rounded-full"
             title="Mark as Done"
         >
@@ -63,24 +140,13 @@ export const MarkAsDoneButton: FC<{
     );
 }
 
-export const MoveToTodayOrBacklogButton: FC<{
-    todos: Todo[];
-    setTodos: Dispatch<SetStateAction<Todo[]>>;
+export const MoveToTodayButton: FC<{
     todoId: string;
+    onClose?: () => void;
 }> = ({
-    todos,
-    setTodos,
     todoId,
+    onClose
 }) => {
-        const todo = todos.find(todo => todo.id === todoId);
-        if (!todo) return null;
-
-        const toggleToBeDoneToday = (todoId: string) => {
-            const updatedTodos = todos.map(todo =>
-                todo.id === todoId ? { ...todo, dateMarkedAsToBeDoneToday: todo.dateMarkedAsToBeDoneToday ? undefined : new Date() } : todo
-            );
-            setTodos(updatedTodos);
-        };
 
         const MoveToTodaySVG = () => {
             const todayDate = getDate(new Date());
@@ -101,6 +167,31 @@ export const MoveToTodayOrBacklogButton: FC<{
             );
         };
 
+        const handleMoveToToday = () => {
+            if (onClose) onClose();
+            moveTodoToToday(todoId);
+        }
+
+        return (
+            <button
+                onClick={() => handleMoveToToday()}
+                className="hover:bg-gray-200 p-2 rounded-full"
+                title="Move to Today"
+            >
+                <MoveToTodaySVG />
+            </button>
+        );
+    };
+
+
+
+export const MoveToBacklogButton: FC<{
+    todoId: string;
+    onClose?: () => void;
+}> = ({
+    todoId,
+    onClose
+}) => {
         const MoveToBacklogSVG = () => {
             return (
                 <>
@@ -112,17 +203,19 @@ export const MoveToTodayOrBacklogButton: FC<{
             )
         }
 
+        const handleMoveToBacklog = () => {
+            if (onClose) onClose();
+            moveTodoToBacklog(todoId);
+        }
+
         return (
             <button
-                onClick={() => toggleToBeDoneToday(todo.id)}
+                onClick={() => handleMoveToBacklog()}
                 className="hover:bg-gray-200 p-2 rounded-full"
-                title={
-                    todo.dateMarkedAsToBeDoneToday && isToday(todo.dateMarkedAsToBeDoneToday)
-                        ? "Back to Backlog"
-                        : "Move to Today"
-                }
+                title="Move to Backlog"
             >
-                {todo.dateMarkedAsToBeDoneToday && isToday(todo.dateMarkedAsToBeDoneToday) ? <MoveToBacklogSVG /> : <MoveToTodaySVG />}
+                <MoveToBacklogSVG />
             </button>
-        );
+        )
+
     };
