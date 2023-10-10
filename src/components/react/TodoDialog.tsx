@@ -51,11 +51,11 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
     if (todo && dialogElement) {
       dialogElement.showModal();
-      document.body.style.overflowY = "hidden";
+      document.body.style.overflow = "hidden";
       dialogElement.addEventListener("cancel", handleCancelEvent);
     } else if (!todo && dialogElement) {
       dialogElement.close();
-      document.body.style.overflowY = "auto";
+      document.body.style.overflow = "auto";
       dialogElement.removeEventListener("cancel", handleCancelEvent);
     }
 
