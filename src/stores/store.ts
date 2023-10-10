@@ -1,6 +1,7 @@
 import { computed, atom, action } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
 import type { Todo } from "../components/react/TodoType";
+import { isToday } from "date-fns";
 
 export const $todos = persistentAtom<Todo[]>("todos", [], {
 	encode: (todos: Todo[]) => JSON.stringify(todos),
@@ -188,7 +189,10 @@ export const $doneTodos = computed($todos, (todos) => {
 
 export const $todayTodos = computed($todos, (todos) => {
 	return todos.filter(
-		(todo) => todo.dateMarkedAsToBeDoneToday && !todo.dateDeleted
+		(todo) =>
+			todo.dateMarkedAsToBeDoneToday &&
+			isToday(todo.dateMarkedAsToBeDoneToday) &&
+			!todo.dateDeleted
 	);
 });
 
