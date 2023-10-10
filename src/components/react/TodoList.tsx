@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import type { FC } from "react";
 import { titleCase } from "title-case";
-import { useStore } from '@nanostores/react';
-import { formatDistanceToNow } from 'date-fns'
-import { enGB } from 'date-fns/locale';
+import { useStore } from "@nanostores/react";
+import { formatDistanceToNow } from "date-fns"
+import { enGB } from "date-fns/locale";
 
 
 import { MarkAsDoneButton, SoftDeleteTodoButton, MoveToBacklogButton, MoveToTodayButton, HardDeleteAllDeletedTodosButton, SoftDeleteAllDoneTodosButton, HardDeleteSingleDeletedTodoButton, UnmarkAsDoneButton } from "./Buttons";
@@ -89,6 +89,13 @@ const TodoItem: FC<{ todo: Todo, openDialogWithTodo: (todo: Todo) => void }> = (
                     {todoTitleElement}
 
                     {
+                        todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
+                        <span className="text-xs">
+                            {todo.numberOfTimesMarkedAsToBeDoneToday} times marked as to be done today
+                        </span>
+                    }
+
+                    {
                         !todo.isDone &&
 
                         <span className="text-xs">
@@ -131,7 +138,7 @@ export const TodoList: FC = () => {
     }
 
 
-    // Logging out the current filter's todos
+    // Logging out the current filter"s todos
     console.log(todos);
 
     const dialogRef = useRef<HTMLDialogElement>(null);

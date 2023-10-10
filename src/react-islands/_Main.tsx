@@ -1,7 +1,7 @@
-import { ListSwitcher } from '../components/react/ListSwitcher';
-import { TodoInput } from '../components/react/TodoInput';
-import { TodoList } from '../components/react/TodoList';
-// import { differenceInDays } from 'date-fns';
+import { ListSwitcher } from "../components/react/ListSwitcher";
+import { TodoInput } from "../components/react/TodoInput";
+import { TodoList } from "../components/react/TodoList";
+// import { differenceInDays } from "date-fns";
 
 const Main = () => {
 

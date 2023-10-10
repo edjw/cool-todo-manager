@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useStore } from '@nanostores/react'
-import type { FC, FormEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useEffect, useState } from "react";
+import { useStore } from "@nanostores/react"
+import type { FC, FormEvent } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import { $filterType, addTodo } from '../../stores/store';
+import { $filterType, addTodo } from "../../stores/store";
 
 
 export const TodoInput: FC = () => {
@@ -37,6 +37,7 @@ export const TodoInput: FC = () => {
             isDone: false,
             dateDeleted: undefined,
             dateMarkedAsToBeDoneToday: toBeDoneToday ? new Date() : undefined,
+            numberOfTimesMarkedAsToBeDoneToday: toBeDoneToday ? 1 : 0
         });
 
         setInputValue("");
@@ -57,8 +58,12 @@ export const TodoInput: FC = () => {
                     />
                     <div className="flex items-center gap-x-4 relative group">
 
-                        <label htmlFor="today" className={
-                            `
+                        <label
+                            htmlFor="today"
+                            title="Add to today"s todos"
+
+                            className={
+                                `
                         select-none cursor-pointer px-4 py-1 outline outline-bg-gray-800 rounded-lg flex justify-center gap-x-1 items-center group-focus:ring group-focus:ring-blue-400
 
                         ${toBeDoneToday && "bg-gray-800 outline outline-gray-900 text-white"}
@@ -88,7 +93,7 @@ export const TodoInput: FC = () => {
                         </label>
                     </div>
                 </div>
-                <button type="submit" className="border-2 border-black rounded py-2 px-4 -mt-px">Add</button>
+                <button type="submit" title="Add a todo" className="border-2 border-black rounded py-2 px-4 -mt-px">Add</button>
             </form >
         </div>
     );

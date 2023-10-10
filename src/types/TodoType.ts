@@ -6,4 +6,5 @@ export type Todo = {
 	isDone: boolean;
 	dateDeleted?: Date;
 	dateMarkedAsToBeDoneToday?: Date;
+	numberOfTimesMarkedAsToBeDoneToday: number;
 };

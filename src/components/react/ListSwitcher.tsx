@@ -1,8 +1,8 @@
-import { useStore } from '@nanostores/react';
+import { useStore } from "@nanostores/react";
 
 import { $todos, setFilterType, $filterType, $backlogTodos, $allTodos, $todayTodos, $doneTodos, $deletedTodos } from "../../stores/store";
 import type { filterTypes } from "../../types/filterTypes";
-import { $isMenuOpen, toggleMenu } from '../../stores/uiStateStore';
+import { $isMenuOpen, toggleMenu } from "../../stores/uiStateStore";
 
 
 type MenuButtonProps = {

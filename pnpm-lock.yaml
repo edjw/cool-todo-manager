@@ -35,6 +35,9 @@ dependencies:
   nanostores:
     specifier: ^0.9.3
     version: 0.9.3
+  number-to-words:
+    specifier: ^1.2.4
+    version: 1.2.4
   react:
     specifier: ^18.0.0
     version: 18.2.0
@@ -55,6 +58,9 @@ devDependencies:
   '@tailwindcss/forms':
     specifier: ^0.5.6
     version: 0.5.6(tailwindcss@3.3.3)
+  '@types/number-to-words':
+    specifier: ^1.2.1
+    version: 1.2.1
   '@types/uuid':
     specifier: ^9.0.5
     version: 9.0.5
@@ -990,6 +996,10 @@ packages:
     dependencies:
       '@types/unist': 2.0.8
     dev: false
+
+  /@types/number-to-words@1.2.1:
+    resolution: {integrity: sha512-lwZhIftZ9f9NR6zfhgsH3lfRcmE/vpLSuGzKPQI7ypbVscoEWXMjp3dyC1xaPfolQZSqXszUwTtauMsS30OnWw==}
+    dev: true
 
   /@types/parse5@6.0.3:
     resolution: {integrity: sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g==}
@@ -2744,6 +2754,10 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       path-key: 4.0.0
+    dev: false
+
+  /number-to-words@1.2.4:
+    resolution: {integrity: sha512-/fYevVkXRcyBiZDg6yzZbm0RuaD6i0qRfn8yr+6D0KgBMOndFPxuW10qCHpzs50nN8qKuv78k8MuotZhcVX6Pw==}
     dev: false
 
   /object-assign@4.1.1:

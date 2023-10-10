@@ -2,37 +2,36 @@ import { getDate } from "date-fns";
 import type { FC } from "react";
 import { markTodoAsDone, softDeleteTodo, moveTodoToBacklog, moveTodoToToday, hardDeleteAllDeletedTodos, SoftDeleteAllDoneTodos, hardDeleteSingleDeletedTodo, unmarkTodoAsDone } from "../../stores/store";
 
-export
-    const HardDeleteAllDeletedTodosButton: FC = () => {
+export const HardDeleteAllDeletedTodosButton: FC = () => {
 
-        const doubleCheck = () => {
-            const confirmation = confirm("Are you sure you want to delete all deleted todos? This action cannot be undone.");
-            return confirmation;
-        };
-
-        return (
-            <button
-                onClick={() => {
-                    if (doubleCheck()) {
-                        hardDeleteAllDeletedTodos();
-                    }
-                }}
-
-                className='hover:bg-gray-200 p-2 border border-gray-200 rounded max-w-[300px]'
-            >Destroy All Deleted Todos</button>
-        )
+    const doubleCheck = () => {
+        const confirmation = confirm("Are you sure you want to delete all deleted todos? This action cannot be undone.");
+        return confirmation;
     };
 
-export
-    const SoftDeleteAllDoneTodosButton: FC = () => {
+    return (
+        <button
+            onClick={() => {
+                if (doubleCheck()) {
+                    hardDeleteAllDeletedTodos();
+                }
+            }}
+            title="Destroy All Deleted Todos"
+            className="hover:bg-red-600 hover:text-gray-200  border border-gray-200 rounded max-w-[300px]"
+        >Destroy All Deleted Todos</button>
+    )
+};
 
-        return (
-            <button
-                onClick={SoftDeleteAllDoneTodos}
-                className='hover:bg-gray-200 p-2 border border-gray-200 rounded max-w-[200px]'
-            >Delete All Done Todos</button>
-        )
-    };
+export const SoftDeleteAllDoneTodosButton: FC = () => {
+
+    return (
+        <button
+            onClick={SoftDeleteAllDoneTodos}
+            className="hover:bg-red-200 hover:text-gray-700  border border-gray-200 rounded max-w-[200px]"
+            title="Delete All Done Todos"
+        >Delete All Done Todos</button>
+    )
+};
 
 
 export const SoftDeleteTodoButton: FC<{
@@ -60,7 +59,7 @@ export const SoftDeleteTodoButton: FC<{
             <button
                 onClick={() => handleSoftDelete()}
                 title="Delete"
-                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+                className="hover:bg-red-200 hover:text-gray-700  rounded-full flex flex-col items-center"
             >
                 <TrashSVG />
                 <span className="sr-only">Delete</span>
@@ -71,12 +70,21 @@ export const SoftDeleteTodoButton: FC<{
 
 export const HardDeleteSingleDeletedTodoButton: FC<{
     todoId: string;
-}> = ({ todoId }) => {
+    onClose?: () => void;
+}> = ({ todoId, onClose }) => {
 
     const doubleCheck = () => {
         const confirmation = confirm("Are you sure you want to delete this todo? This action cannot be undone.");
         return confirmation;
     };
+
+    const handleHardDelete = () => {
+        if (onClose) onClose();
+
+        hardDeleteSingleDeletedTodo(
+            todoId
+        );
+    }
 
     const TrashSVG: FC = () => (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -90,14 +98,12 @@ export const HardDeleteSingleDeletedTodoButton: FC<{
         <button
             onClick={() => {
                 if (doubleCheck()) {
-                    hardDeleteSingleDeletedTodo(
-                        todoId
-                    );
+                    handleHardDelete();
                 }
             }
             }
             title="Destroy this todo"
-            className="hover:bg-gray-200 p-2 rounded-full"
+            className="hover:bg-red-600 hover:text-gray-200  rounded-full"
         >
             <TrashSVG />
             <span className="sr-only">Destroy</span>
@@ -130,7 +136,7 @@ export const MarkAsDoneButton: FC<{
             onClick={() =>
                 handleMarkAsDone()
             }
-            className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+            className="hover:bg-gray-200  rounded-full flex flex-col items-center"
             title="Mark as Done"
         >
             <CheckmarkSVG />
@@ -163,7 +169,7 @@ export const UnmarkAsDoneButton: FC<{
             onClick={() =>
                 handleUnmarkAsDone()
             }
-            className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+            className="hover:bg-gray-200  rounded-full flex flex-col items-center"
             title="Mark as not done"
         >
             <BackArrowSVG />
@@ -207,7 +213,7 @@ export const MoveToTodayButton: FC<{
         return (
             <button
                 onClick={() => handleMoveToToday()}
-                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+                className="hover:bg-gray-200  rounded-full flex flex-col items-center"
                 title="Move to Today"
             >
                 <MoveToTodaySVG />
@@ -244,7 +250,7 @@ export const MoveToBacklogButton: FC<{
         return (
             <button
                 onClick={() => handleMoveToBacklog()}
-                className="hover:bg-gray-200 p-2 rounded-full flex flex-col items-center"
+                className="hover:bg-gray-200  rounded-full flex flex-col items-center"
                 title="Move to Backlog"
             >
                 <MoveToBacklogSVG />
