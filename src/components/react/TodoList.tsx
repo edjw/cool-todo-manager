@@ -133,14 +133,14 @@ const TodoItem: FC<{
             <>
               {todoMarkedForToday ? (
                 <>
-                  <span className="text-xs">
+                  <span className="text-xs text-left">
                     {numberOfTimesMarkedAsToBeDoneToday} time in Today |{" "}
                     {createdTimeAgo} old
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="text-xs">{createdTimeAgo} old</span>
+                  <span className="text-xs text-left">{createdTimeAgo} old</span>
                 </>
               )}
 
