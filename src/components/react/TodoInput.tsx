@@ -84,7 +84,7 @@ export const TodoInput: FC = () => {
           border-2 border-black rounded py-2 px-4 -mt-px hover:bg-black hover:text-white
           "
         >
-          Add +
+          Add
         </button>
       </form>
     </div>

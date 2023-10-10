@@ -85,7 +85,13 @@ const TodoItem: FC<{
   todo: Todo;
   openDialogWithTodo: (todo: Todo) => void;
 }> = ({ todo, openDialogWithTodo }) => {
-  const todoTitleElement = todo.isDone ? <s>{todo.title}</s> : todo.title;
+  const todoTitleElement = todo.isDone ? (
+    <>
+      <s>{todo.title}</s>
+    </>
+  ) : (
+    todo.title
+  );
 
   const timeAgo = formatDistanceToNow(todo.dateCreated, {
     addSuffix: false,
@@ -101,19 +107,22 @@ const TodoItem: FC<{
       <div className="w-full border">
         <button
           onClick={() => openDialogWithTodo(todo)}
-          className={`flex flex-col gap-y-4 w-full justify-start ${
-            todo.isDone ? "line-through" : ""
-          }`}
+          className={`flex flex-col gap-y-4 w-full justify-start
+
+          `}
         >
           {todoTitleElement}
 
-          {todo.numberOfTimesMarkedAsToBeDoneToday > 0 && (
-            <span className="text-xs">
-              {numberOfTimesMarkedAsToBeDoneToday} time in Today
-            </span>
+          {!todo.isDone && (
+            <>
+              {todo.numberOfTimesMarkedAsToBeDoneToday > 0 && (
+                <span className="text-xs">
+                  {numberOfTimesMarkedAsToBeDoneToday} time in Today
+                </span>
+              )}
+              <span className="text-xs">{timeAgo} old</span>
+            </>
           )}
-
-          {!todo.isDone && <span className="text-xs">{timeAgo} old</span>}
         </button>
       </div>
       <div className="flex gap-x-4">
