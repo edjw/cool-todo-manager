@@ -1,5 +1,5 @@
 ## I want this!
-
+- don't allow scroll underneath when dialog open
 
 ## Maybes
 - Keyboard shortcuts

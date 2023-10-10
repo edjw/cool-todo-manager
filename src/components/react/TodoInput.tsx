@@ -40,21 +40,23 @@ export const TodoInput: FC = () => {
   };
 
   return (
-    <div>
-      <form className="flex gap-x-8 items-start" onSubmit={handleSubmit}>
-        <div className="flex flex-col sm:flex-row gap-x-4 gap-y-4">
-          <input
-            type="text"
-            value={inputValue}
-            placeholder="Add a todo"
-            onChange={(event) => setInputValue(event.target.value)}
-            className="border px-4 py-2 rounded-lg min-w-[200px]"
-          />
-          <div className="flex items-center gap-x-4 relative group">
-            <label
-              htmlFor="today"
-              title="Add to today's todos"
-              className={`
+    <form
+      className="flex justify-between items-start gap-x-8 max-w-xl"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex flex-col sm:flex-row flex-wrap gap-x-4 gap-y-4">
+        <textarea
+          value={inputValue}
+          placeholder="Add a todo"
+          onChange={(event) => setInputValue(event.target.value)}
+          className="border px-4 py-2 rounded-lg min-w-[400px]"
+        ></textarea>
+
+        <div className="flex items-center gap-x-4 relative group">
+          <label
+            htmlFor="today"
+            title="Add to today's todos"
+            className={`
                         select-none cursor-pointer px-2 py-0.5 outline outline-bg-gray-800 rounded-lg flex justify-center gap-x-1 items-center group-focus:ring group-focus:ring-blue-400 min-w-[100px]
 
                         ${
@@ -63,30 +65,29 @@ export const TodoInput: FC = () => {
                         }
 
                     `}
-            >
-              Today
-              {!toBeDoneToday ? <span>?</span> : <span>✓</span>}
-              <input
-                type="checkbox"
-                name="today"
-                id="today"
-                className="opacity-0 absolute"
-                checked={toBeDoneToday}
-                onChange={() => setToBeDoneToday(!toBeDoneToday)}
-              />
-            </label>
-          </div>
+          >
+            Today
+            {!toBeDoneToday ? <span>?</span> : <span>✓</span>}
+            <input
+              type="checkbox"
+              name="today"
+              id="today"
+              className="opacity-0 absolute"
+              checked={toBeDoneToday}
+              onChange={() => setToBeDoneToday(!toBeDoneToday)}
+            />
+          </label>
         </div>
-        <button
-          type="submit"
-          title="Add a todo"
-          className="
-          border-2 border-black rounded py-2 px-4 -mt-px hover:bg-black hover:text-white
+      </div>
+      <button
+        type="submit"
+        title="Add a todo"
+        className="
+          border-2 border-black rounded py-0 px-4 mt-3 hover:bg-black hover:text-white h-10
           "
-        >
-          Add
-        </button>
-      </form>
-    </div>
+      >
+        Add
+      </button>
+    </form>
   );
 };

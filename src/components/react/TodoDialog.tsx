@@ -35,6 +35,8 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 }) => {
   if (!todo) return null;
 
+  const [showTitleEditor, setShowTitleEditor] = useState(false);
+  const [todoTitle, setTodoTitle] = useState(todo.title);
   const [showDescriptionEditor, setShowDescriptionEditor] = useState(false);
   const [todoDescription, setTodoDescription] = useState(todo.description);
 
@@ -49,18 +51,28 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
     if (todo && dialogElement) {
       dialogElement.showModal();
+      document.body.style.overflowY = "hidden";
       dialogElement.addEventListener("cancel", handleCancelEvent);
     } else if (!todo && dialogElement) {
       dialogElement.close();
+      document.body.style.overflowY = "auto";
       dialogElement.removeEventListener("cancel", handleCancelEvent);
     }
 
     return () => {
+      document.body.style.overflowY = "auto";
       dialogElement?.removeEventListener("cancel", handleCancelEvent);
     };
   }, [todo, dialogRef, onClose]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleTitleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    updateTodo({ ...todo, title: todoTitle });
+    todo.title = todoTitle;
+    setShowTitleEditor(false);
+  };
+
+  const handleDescriptionSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     updateTodo({ ...todo, description: todoDescription });
     todo.description = todoDescription;
@@ -95,7 +107,38 @@ export const TodoDialog: FC<TodoDialogProps> = ({
       </div>
       <div className="flex flex-col px-8 py-4 gap-y-8">
         <div className="flex flex-col gap-y-2 border-b max-w-md">
-          <p className="text-2xl self-start">{todo.title}</p>
+          {!showTitleEditor && todo.title ? (
+            <button
+              className="text-2xl text-left"
+              onClick={() => setShowTitleEditor(true)}
+            >
+              {todo.title}
+            </button>
+          ) : (
+            <form
+              className="flex flex-col gap-y-2 max-w-md w-full"
+              onSubmit={(event) => handleTitleSubmit(event)}
+            >
+              <label htmlFor="todoTitle" className="sr-only">
+                Title
+              </label>
+              <textarea
+                name="todoTitle"
+                id="todoTitle"
+                className="border rounded"
+                value={todoTitle}
+                onChange={(event) => setTodoTitle(event.target.value)}
+              ></textarea>
+
+              <button
+                type="submit"
+                className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+              >
+                Save
+              </button>
+            </form>
+          )}
+
           {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
             filterType === "today" && (
               <p className="text-sm text-gray-700">
@@ -141,7 +184,9 @@ export const TodoDialog: FC<TodoDialogProps> = ({
                 className="cursor-pointer rounded max-w-md text-left"
                 id="todoDescription"
               >
-                <Markdown className="prose border px-2 py-2 rounded">{todo.description}</Markdown>
+                <Markdown className="prose border px-2 py-2 rounded break-words">
+                  {todo.description}
+                </Markdown>
               </button>
             </div>
           </>
@@ -149,7 +194,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
           <>
             <form
               className="flex flex-col gap-y-2 max-w-md w-full"
-              onSubmit={(event) => handleSubmit(event)}
+              onSubmit={(event) => handleDescriptionSubmit(event)}
             >
               <label
                 htmlFor="todoDescription"
