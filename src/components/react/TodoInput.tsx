@@ -60,7 +60,7 @@ export const TodoInput: FC = () => {
 
                         <label
                             htmlFor="today"
-                            title="Add to today"s todos"
+                            title="Add to today's todos"
 
                             className={
                                 `
