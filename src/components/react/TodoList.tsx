@@ -85,7 +85,6 @@ const TodoItem: FC<{
   todo: Todo;
   openDialogWithTodo: (todo: Todo) => void;
 }> = ({ todo, openDialogWithTodo }) => {
-  const filterType = useStore($filterType);
 
   const todoTitleElement = todo.isDone ? (
     <>
