@@ -123,7 +123,7 @@ const TodoItem: FC<{
       <div className="w-full">
         <button
           onClick={() => openDialogWithTodo(todo)}
-          className={`flex flex-col gap-y-4 w-full justify-start
+          className={`flex flex-col gap-y-4 w-full justify-start text-left
 
           `}
         >
