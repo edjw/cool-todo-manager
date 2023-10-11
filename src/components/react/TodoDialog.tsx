@@ -84,19 +84,15 @@ export const TodoDialog: FC<TodoDialogProps> = ({
     locale: enGB,
   });
 
-  const numberOfTimesMarkedAsToBeDoneToday = titleCase(
-    converter.toWordsOrdinal(todo.numberOfTimesMarkedAsToBeDoneToday),
-  );
-
   return (
     <dialog
       ref={dialogRef}
-      className="fixed z-10 inset-0 overflow-y-auto bg-white w-full h-full rounded-xl"
+      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-5/6 rounded-xl"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-center justify-end pt-6 pr-4">
+      <div className="flex items-center justify-end pt-3 pr-4">
         <button
           onClick={onClose}
           className="border px-3 py-2 rounded hover:bg-gray-200"
@@ -142,7 +138,11 @@ export const TodoDialog: FC<TodoDialogProps> = ({
           {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
             filterType === "today" && (
               <p className="text-sm text-gray-700">
-                <span>{numberOfTimesMarkedAsToBeDoneToday}</span> time in Today
+                Was in Today{" "}
+                <span className="font-semibold">
+                  {todo.numberOfTimesMarkedAsToBeDoneToday}
+                </span>{" "}
+                times
               </p>
             )}
 

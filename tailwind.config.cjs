@@ -12,6 +12,9 @@ module.exports = {
 				"button": {
 					userSelect: "none",
 				},
+				"dialog::backdrop": {
+					backdropFilter: "blur(8px)",
+				}
 			});
 		},
 	],

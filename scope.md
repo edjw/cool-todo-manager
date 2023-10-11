@@ -1,5 +1,4 @@
 ## I want this!
-- make dialog a bit prettier. too wide atm
 - add a way of making a backup. restore a backup. automate it?
 - do I want a Sometime Filter? Like a real back of the backlog place?
 
