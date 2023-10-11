@@ -91,7 +91,7 @@ export const RestoreButton = () => {
 
         <button
           onClick={initiateRestore}
-          className="border rounded py-2 px-4 max-w-[140px]"
+          className="border rounded py-2 px-4 max-w-[150px]"
         >
           Restore Todos
         </button>

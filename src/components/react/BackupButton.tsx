@@ -18,7 +18,7 @@ export const BackupButton = () => {
       <div>
         <button
           onClick={downloadBackup}
-          className="border rounded px-4 py-2 max-w-[140px]"
+          className="border rounded px-4 py-2 max-w-[150px]"
         >
           Backup Todos
         </button>
