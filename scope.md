@@ -1,5 +1,4 @@
 ## I want this!
-- add a way of making a backup. restore a backup. automate it?
 - move settings to the bottom of the sidebar
 
 ## Maybes

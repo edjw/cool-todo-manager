@@ -11,7 +11,6 @@ const Main = () => {
       >
         <aside className="flex flex-col gap-y-8">
           <ListSwitcher />
-          <SettingsArea />
         </aside>
 
         <div className="grid grid-cols-1 grid-rows-[auto_1fr] gap-y-12">
