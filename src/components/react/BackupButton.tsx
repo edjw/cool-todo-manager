@@ -13,8 +13,16 @@ const downloadBackup = () => {
 };
 
 export const BackupButton = () => {
-    return <button
-        onClick={downloadBackup}
-        className="border rounded px-4 py-2"
-    >Backup Todos</button>;
+  return (
+    <>
+      <div>
+        <button
+          onClick={downloadBackup}
+          className="border rounded px-4 py-2 max-w-[140px]"
+        >
+          Backup Todos
+        </button>
+      </div>
+    </>
+  );
 };

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { TodosSchema } from "../../types/TodoType";
 import type { Todo } from "../../types/TodoType";
+import { $todos } from "../../stores/store";
 
 export const RestoreButton = () => {
   const [importOption, setImportOption] = useState<"overwrite" | "merge">(
@@ -48,6 +49,7 @@ export const RestoreButton = () => {
     }
 
     localStorage.setItem("todos", JSON.stringify(finalData));
+    $todos.set(finalData); // refreshes the UI basically
   };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,42 +79,46 @@ export const RestoreButton = () => {
   };
 
   return (
-    <div className="flex flex-col items-start">
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".json"
-        onChange={handleFileInput}
-        className="hidden"
-      />
+    <>
+      <div className="flex flex-col gap-y-4">
+        <input
+          ref={inputRef}
+          type="file"
+          accept=".json"
+          onChange={handleFileInput}
+          className="hidden"
+        />
 
-      <button
-        onClick={initiateRestore}
-        className="border-2 border-black rounded py-2 px-4 hover:bg-black hover:text-white"
-      >
-        Restore
-      </button>
+        <button
+          onClick={initiateRestore}
+          className="border rounded py-2 px-4 max-w-[140px]"
+        >
+          Restore Todos
+        </button>
 
-      <div className="flex">
-        <label className="mr-4">
-          <input
-            type="radio"
-            value="overwrite"
-            checked={importOption === "overwrite"}
-            onChange={() => setImportOption("overwrite")}
-          />
-          Overwrite
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="merge"
-            checked={importOption === "merge"}
-            onChange={() => setImportOption("merge")}
-          />
-          Merge
-        </label>
+        <div className="flex flex-col gap-y-2">
+          <label className="flex gap-x-2 items-center text-sm cursor-pointer">
+            <input
+              name="importOption"
+              type="radio"
+              value="overwrite"
+              checked={importOption === "overwrite"}
+              onChange={() => setImportOption("overwrite")}
+            />
+            Overwrite
+          </label>
+          <label className="flex gap-x-2 items-center text-sm cursor-pointer">
+            <input
+              name="importOption"
+              type="radio"
+              value="merge"
+              checked={importOption === "merge"}
+              onChange={() => setImportOption("merge")}
+            />
+            Merge
+          </label>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
