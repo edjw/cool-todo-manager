@@ -84,6 +84,13 @@ export const TodoDialog: FC<TodoDialogProps> = ({
     locale: enGB,
   });
 
+<<<<<<< HEAD
+=======
+  const ordinalOfTimesMarkedAsToBeDoneToday = titleCase(
+    converter.toOrdinal(todo.numberOfTimesMarkedAsToBeDoneToday),
+  );
+
+>>>>>>> f89aa689ae80fc068da377b7eac1f33ce53cff0c
   return (
     <dialog
       ref={dialogRef}
@@ -138,11 +145,15 @@ export const TodoDialog: FC<TodoDialogProps> = ({
           {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
             filterType === "today" && (
               <p className="text-sm text-gray-700">
+<<<<<<< HEAD
                 Was in Today{" "}
                 <span className="font-semibold">
                   {todo.numberOfTimesMarkedAsToBeDoneToday}
                 </span>{" "}
                 times
+=======
+                Was in Today <span className="font-semibold">{todo.numberOfTimesMarkedAsToBeDoneToday}</span> times
+>>>>>>> f89aa689ae80fc068da377b7eac1f33ce53cff0c
               </p>
             )}
 
