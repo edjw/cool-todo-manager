@@ -12,6 +12,10 @@ module.exports = {
 				"button": {
 					userSelect: "none",
 				},
+				"summary": {
+					userSelect: "none",
+					cursor: "pointer",
+				},
 				"dialog::backdrop": {
 					backdropFilter: "blur(8px)",
 				}

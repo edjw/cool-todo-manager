@@ -59,7 +59,7 @@ export const ListSwitcher = () => {
             `}
       >
         <button
-          className="flex sm:hidden self-end items-center justify-center hover:bg-gray-200 border rounded py-2 px-2 max-w-[50px] w-full"
+          className="flex sm:hidden self-end items-center justify-center hover:bg-gray-200 border rounded py-2 px-2 max-w-[50px] w-full bg-white"
           onClick={() => toggleMenu()}
           title={isMenuOpen ? "Close Menu" : "Open Menu"}
         >
