@@ -2,9 +2,6 @@ import { useRef, useState } from "react";
 import type { FC } from "react";
 import { titleCase } from "title-case";
 import { useStore } from "@nanostores/react";
-import { formatDistanceToNow, isToday } from "date-fns";
-import { enGB } from "date-fns/locale";
-import converter from "number-to-words";
 
 import {
   MarkAsDoneButton,
@@ -26,6 +23,7 @@ import {
   $deletedTodos,
 } from "../../stores/store";
 import { TodoDialog } from "./TodoDialog";
+import { TodoItem } from "./TodoItem";
 
 export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
   const filterType = useStore($filterType);
@@ -78,84 +76,6 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
         return <span key={index}>{button}</span>;
       })}
     </>
-  );
-};
-
-const TodoItem: FC<{
-  todo: Todo;
-  openDialogWithTodo: (todo: Todo) => void;
-}> = ({ todo, openDialogWithTodo }) => {
-
-  const todoTitleElement = todo.isDone ? (
-    <>
-      <s>{todo.title}</s>
-    </>
-  ) : (
-    todo.title
-  );
-
-  const createdTimeAgo = formatDistanceToNow(todo.dateCreated, {
-    addSuffix: false,
-    locale: enGB,
-  });
-
-  // const addedToTodayTimeAgo = todo.dateMarkedAsToBeDoneToday
-  //   ? formatDistanceToNow(todo.dateMarkedAsToBeDoneToday, {
-  //       addSuffix: false,
-  //       locale: enGB,
-  //     })
-  //   : "Not set";
-
-  const numberOfTimesMarkedAsToBeDoneToday = titleCase(
-    converter.toWordsOrdinal(todo.numberOfTimesMarkedAsToBeDoneToday),
-  );
-
-  const todoMarkedForToday: boolean = todo.dateMarkedAsToBeDoneToday
-    ? isToday(todo.dateMarkedAsToBeDoneToday)
-    : false;
-
-  return (
-    <li
-      key={todo.id}
-      className="flex gap-x-4 items-center justify-between border-b pb-2"
-    >
-      <div className="w-full">
-        <button
-          onClick={() => openDialogWithTodo(todo)}
-          className={`flex flex-col gap-y-4 w-full justify-start text-left
-
-          `}
-        >
-          {todoTitleElement}
-
-          {!todo.isDone && (
-            <>
-              {todoMarkedForToday ? (
-                <>
-                  <span className="text-xs text-left">
-                    {numberOfTimesMarkedAsToBeDoneToday} time in Today |{" "}
-                    {createdTimeAgo} old
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="text-xs text-left">{createdTimeAgo} old</span>
-                </>
-              )}
-
-              {/* {filterType === "today" && (
-                <span className="text-xs text-left">
-                  {addedToTodayTimeAgo} since added to Today
-                </span>
-              )} */}
-            </>
-          )}
-        </button>
-      </div>
-      <div className="flex">
-        <TodoActionButtons todo={todo} />
-      </div>
-    </li>
   );
 };
 

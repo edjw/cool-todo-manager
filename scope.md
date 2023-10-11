@@ -1,5 +1,6 @@
 ## I want this!
-- don't allow scroll underneath when dialog open
+- make it work offline!
+- do I want a Sometime Filter? Like a real back of the backlog place?
 
 ## Maybes
 - Keyboard shortcuts
