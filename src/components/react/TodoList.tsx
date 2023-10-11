@@ -41,8 +41,8 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
       <HardDeleteSingleDeletedTodoButton todoId={todoId} />,
     ],
     backlog: [
-      <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
       <MoveToTodayButton todoId={todoId} />,
+      <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
       <SoftDeleteTodoButton todoId={todoId} />,
     ],
     today: [

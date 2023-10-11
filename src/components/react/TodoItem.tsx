@@ -38,21 +38,44 @@ export const TodoItem: FC<{
     ? isToday(todo.dateMarkedAsToBeDoneToday)
     : false;
 
-  const renderTimeInfo = () => {
+  const renderTimeInfo = (): JSX.Element => {
+    let timesInfo: JSX.Element | string = "";
+
     if (todoMarkedForToday) {
-      return `In Today for ${ordinalOfTimesMarkedAsToBeDoneToday} time | ${createdTimeAgo} old`;
+      return (
+        <>
+          In Today for{" "}
+          <span className="font-semibold">
+            {ordinalOfTimesMarkedAsToBeDoneToday}
+          </span>{" "}
+          time | {createdTimeAgo} old
+        </>
+      );
     } else {
       const times = todo.numberOfTimesMarkedAsToBeDoneToday;
-      let timesInfo = "";
 
       if (times === 0) {
         timesInfo = "";
       } else if (times === 1) {
-        timesInfo = "Was in Today 1 time | ";
+        timesInfo = (
+          <>
+            Was in Today <span className="font-semibold">1</span> time |{" "}
+          </>
+        );
       } else {
-        timesInfo = `Was in Today ${times} times | `;
+        timesInfo = (
+          <>
+            Was in Today <span className="font-semibold">{times}</span> times |{" "}
+          </>
+        );
       }
-      return `${timesInfo}${createdTimeAgo} old`;
+
+      return (
+        <>
+          {timesInfo}
+          {createdTimeAgo} old
+        </>
+      );
     }
   };
 

@@ -1,5 +1,6 @@
 ## I want this!
-- make it work offline!
+- make dialog a bit prettier. too wide atm
+- add a way of making a backup. restore a backup. automate it?
 - do I want a Sometime Filter? Like a real back of the backlog place?
 
 ## Maybes
@@ -13,7 +14,7 @@
 
 ## Nice-to-haves but no big deal
 
-- some api to add tasks from via http so can have shortcuts on ios for quick add to backlog
+- some api to add tasks from via http so can have shortcuts on ios for quick add to backlog. use an astro endpoint with a secret parameter? does kind of make it not single user any more I think?
 - maybe needs login eventually to allow for multiple devices
 - database too maybe but localstorage is fine for now
 
