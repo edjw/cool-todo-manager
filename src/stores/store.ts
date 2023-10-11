@@ -1,28 +1,45 @@
 import { computed, atom, action } from "nanostores";
 import { persistentAtom } from "@nanostores/persistent";
 import type { Todo } from "../types/TodoType";
+import { TodoSchemaForJSON } from "../types/TodoType";
 import type { filterTypes } from "../types/filterTypes";
 import { isToday } from "date-fns";
+import { z } from "zod";
+
+const TodosSchemaForJSON = z.array(TodoSchemaForJSON);
 
 export const $todos = persistentAtom<Todo[]>("todos", [], {
-  encode: (todos: Todo[]) => JSON.stringify(todos),
-  decode: (todosJSON: string) =>
-    JSON.parse(todosJSON).map((todo: Partial<Todo>) => {
-      const newTodo = { ...todo };
-      if (newTodo.dateMarkedAsToBeDoneToday) {
-        newTodo.dateMarkedAsToBeDoneToday = new Date(
-          newTodo.dateMarkedAsToBeDoneToday,
-        );
-      }
-      if (newTodo.dateCreated) {
-        newTodo.dateCreated = new Date(newTodo.dateCreated);
-      }
-      if (newTodo.dateDeleted) {
-        newTodo.dateDeleted = new Date(newTodo.dateDeleted);
-      }
-
-      return newTodo;
-    }),
+  encode: (todos: Todo[]) => {
+    const todosAsStrings = todos.map((todo) => ({
+      ...todo,
+      dateCreated: todo.dateCreated.toISOString(),
+      dateDeleted: todo.dateDeleted?.toISOString(),
+      dateMarkedAsToBeDoneToday: todo.dateMarkedAsToBeDoneToday?.toISOString(),
+    }));
+    const result = TodosSchemaForJSON.safeParse(todosAsStrings);
+    if (result.success) {
+      return JSON.stringify(result.data);
+    } else {
+      console.error("Encoding error:", result.error);
+      return JSON.stringify([]);
+    }
+  },
+  decode: (todosJSON: string) => {
+    const parsedData = TodosSchemaForJSON.safeParse(JSON.parse(todosJSON));
+    if (parsedData.success) {
+      return parsedData.data.map((todo) => ({
+        ...todo,
+        dateCreated: new Date(todo.dateCreated),
+        dateDeleted: todo.dateDeleted ? new Date(todo.dateDeleted) : undefined,
+        dateMarkedAsToBeDoneToday: todo.dateMarkedAsToBeDoneToday
+          ? new Date(todo.dateMarkedAsToBeDoneToday)
+          : undefined,
+      }));
+    } else {
+      console.error("Decoding error:", parsedData.error);
+      return [];
+    }
+  },
 });
 
 export const addTodo = action($todos, "addTodo", (store, newTodo: Todo) => {
