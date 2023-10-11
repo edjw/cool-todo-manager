@@ -4,7 +4,7 @@ import { RestoreButton } from "./RestoreButton";
 export const SettingsArea = () => {
   return (
     <section className="flex flex-col gap-y-4 max-w-[150px]">
-      <details className="[&_svg]:open:-rotate-180">
+      <details className="[&_svg]:open:-rotate-180 [&_summary::-webkit-details-marker]:hidden">
         <summary className="flex items-center list-none">
           <div>
             <svg
@@ -13,9 +13,9 @@ export const SettingsArea = () => {
               height="20"
               width="20"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
             >
               <polyline points="6 9 12 15 18 9"></polyline>
