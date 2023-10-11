@@ -18,8 +18,7 @@ import {
   MoveToTodayButton,
   SoftDeleteTodoButton,
 } from "./Buttons";
-import converter from "number-to-words";
-import { titleCase } from "title-case";
+
 import { useStore } from "@nanostores/react";
 
 type TodoDialogProps = {

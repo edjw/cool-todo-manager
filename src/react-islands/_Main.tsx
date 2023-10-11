@@ -1,7 +1,6 @@
 import { ListSwitcher } from "../components/react/ListSwitcher";
 import { TodoInput } from "../components/react/TodoInput";
 import { TodoList } from "../components/react/TodoList";
-import { SettingsArea } from "../components/react/SettingsArea";
 
 const Main = () => {
   return (
