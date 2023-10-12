@@ -26,6 +26,7 @@ import {
 import { TodoDialog } from "./TodoDialog";
 import { TodoItem } from "./TodoItem";
 import { isToday } from "date-fns";
+import { is } from "date-fns/locale";
 
 export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
   const filterType = useStore($filterType);
@@ -87,6 +88,15 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
           button.props.name === "MoveToBacklogButton" &&
           todo.dateMarkedAsToBeDoneToday &&
           !isToday(todo.dateMarkedAsToBeDoneToday)
+        ) {
+          return null;
+        }
+
+        if (
+          button.props.name === "MoveToBacklogButton" &&
+          filterType === "all" &&
+          (todo.dateMarkedAsToBeDoneToday === undefined ||
+            !isToday(todo.dateMarkedAsToBeDoneToday))
         ) {
           return null;
         }

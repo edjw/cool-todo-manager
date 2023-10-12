@@ -1,7 +1,4 @@
 ## I want this!
-- test the sort order of all the lists
-- in All, if an item is in Today, hide the move to Today button
-- in All, if an item is in Backlog, hide the move to Backlog button
 - Massive space at the top on narrow screen on safari
 
 ## Maybes
