@@ -5,7 +5,7 @@ import {
   useEffect,
   type FormEvent,
 } from "react";
-import { formatDistanceToNow, set } from "date-fns";
+import { formatDistanceToNow, isToday, set } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Markdown from "react-markdown";
 import type { Literal, Parent, Node } from "unist";
@@ -179,7 +179,9 @@ export const TodoDialog: FC<TodoDialogProps> = ({
               </p>
             )}
 
-          <p className="text-sm text-gray-700 select-none">{createdTimeAgo} old</p>
+          <p className="text-sm text-gray-700 select-none">
+            {createdTimeAgo} old
+          </p>
 
           {todo.dateDeleted && (
             <p className="text-sm text-gray-700 select-none">
@@ -188,13 +190,29 @@ export const TodoDialog: FC<TodoDialogProps> = ({
           )}
 
           <div className="flex space-x-4 py-2">
-            <MarkAsDoneButton
-              name="MarkAsDoneButton"
-              todoId={todo.id}
-              onClose={onClose}
-            />
-            <MoveToBacklogButton todoId={todo.id} onClose={onClose} />
-            <MoveToTodayButton todoId={todo.id} onClose={onClose} />
+            {!todo.isDone && (
+              <MarkAsDoneButton
+                name="MarkAsDoneButton"
+                todoId={todo.id}
+                onClose={onClose}
+              />
+            )}
+
+            {filterType !== "backlog" && (
+              <MoveToBacklogButton
+                name="Move To Backlog Button"
+                todoId={todo.id}
+                onClose={onClose}
+              />
+            )}
+
+            {filterType !== "today" && (
+              <MoveToTodayButton
+                name="Move to Today Button"
+                todoId={todo.id}
+                onClose={onClose}
+              />
+            )}
 
             {!todo.dateDeleted && (
               <SoftDeleteTodoButton todoId={todo.id} onClose={onClose} />
