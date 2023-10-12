@@ -137,7 +137,11 @@ export const softDeleteTodo = action(
     const prevTodos = store.get();
     const updatedTodos = prevTodos.map((todo) => {
       if (todo.id === id) {
-        return { ...todo, dateDeleted: new Date() };
+        const updatedTodo: Todo = {
+          ...todo,
+          dateDeleted: new Date(),
+        };
+        return updatedTodo;
       }
       return todo;
     });
@@ -152,7 +156,11 @@ export const SoftDeleteAllDoneTodos = action(
     const prevTodos = store.get();
     const updatedTodos = prevTodos.map((todo) => {
       if (todo.isDone) {
-        return { ...todo, dateDeleted: new Date() };
+        const updatedTodo: Todo = {
+          ...todo,
+          dateDeleted: new Date(),
+        };
+        return updatedTodo;
       }
       return todo;
     });
@@ -165,7 +173,7 @@ export const hardDeleteTodo = action(
   "deleteTodo",
   (store, id: string) => {
     const prevTodos = store.get();
-    const updatedTodos = prevTodos.filter((todo) => todo.id !== id);
+    const updatedTodos = prevTodos.filter((todo: Todo) => todo.id !== id);
     store.set(updatedTodos);
   },
 );
@@ -182,7 +190,11 @@ export const markTodoAsDone = action($todos, "markTodoAsDone", (store, id) => {
   const prevTodos = store.get();
   const updatedTodos = prevTodos.map((todo) => {
     if (todo.id === id) {
-      return { ...todo, isDone: true };
+      const updatedTodo: Todo = {
+        ...todo,
+        isDone: true,
+      };
+      return updatedTodo;
     }
     return todo;
   });
@@ -196,7 +208,11 @@ export const unmarkTodoAsDone = action(
     const prevTodos = store.get();
     const updatedTodos = prevTodos.map((todo) => {
       if (todo.id === id) {
-        return { ...todo, isDone: false };
+        const updatedTodo: Todo = {
+          ...todo,
+          isDone: false,
+        };
+        return updatedTodo;
       }
       return todo;
     });
@@ -211,12 +227,13 @@ export const moveTodoToBacklog = action(
     const prevTodos = store.get();
     const updatedTodos = prevTodos.map((todo) => {
       if (todo.id === id) {
-        return {
+        const updatedTodo: Todo = {
           ...todo,
           isDone: false,
           dateDeleted: undefined,
           dateMarkedAsToBeDoneToday: undefined,
         };
+        return updatedTodo;
       }
       return todo;
     });
@@ -229,16 +246,18 @@ export const moveTodoToToday = action(
   "moveTodoToToday",
   (store, id) => {
     const prevTodos = store.get();
-    const updatedTodos = prevTodos.map((todo) => {
+    const updatedTodos: Todo[] = prevTodos.map((todo: Todo) => {
       if (todo.id === id) {
-        return {
+        const updatedTodo: Todo = {
           ...todo,
           isDone: false,
           dateDeleted: undefined,
+          dateCreated: todo.dateCreated,
           dateMarkedAsToBeDoneToday: new Date(),
           numberOfTimesMarkedAsToBeDoneToday:
             (todo.numberOfTimesMarkedAsToBeDoneToday || 0) + 1,
         };
+        return updatedTodo;
       }
       return todo;
     });
@@ -250,8 +269,10 @@ export const hardDeleteAllDeletedTodos = action(
   $todos,
   "hardDeleteDoneTodos",
   (store) => {
-    const prevTodos = store.get();
-    const updatedTodos = prevTodos.filter((todo) => !todo.dateDeleted);
+    const prevTodos: Todo[] = store.get();
+    const updatedTodos: Todo[] = prevTodos.filter(
+      (todo: Todo) => !todo.dateDeleted,
+    );
     store.set(updatedTodos);
   },
 );
@@ -261,7 +282,7 @@ export const hardDeleteSingleDeletedTodo = action(
   "hardDeleteSingleDeletedTodo",
   (store, id) => {
     const prevTodos = store.get();
-    const updatedTodos = prevTodos.filter((todo) => {
+    const updatedTodos = prevTodos.filter((todo: Todo) => {
       return !(todo.id === id && todo.dateDeleted !== undefined);
     });
     store.set(updatedTodos);
