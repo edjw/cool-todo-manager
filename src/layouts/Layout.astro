@@ -1,6 +1,4 @@
 ---
-import { SettingsArea } from "../components/react/SettingsArea";
-
 interface Props {
   title: string;
 }
@@ -32,9 +30,5 @@ const { title } = Astro.props;
     </header>
 
     <slot />
-
-    <footer>
-      <SettingsArea client:only="react" />
-    </footer>
   </body>
 </html>

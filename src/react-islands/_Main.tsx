@@ -1,4 +1,5 @@
 import { ListSwitcher } from "../components/react/ListSwitcher";
+import { SettingsArea } from "../components/react/SettingsArea";
 import { TodoInput } from "../components/react/TodoInput";
 import { TodoList } from "../components/react/TodoList";
 // import { $isMenuOpen } from "../stores/uiStateStore";
@@ -20,6 +21,10 @@ const Main = () => {
           <TodoList />
         </div>
       </main>
+
+      <footer>
+        <SettingsArea />
+      </footer>
     </>
   );
 };

@@ -1,11 +1,7 @@
-import {
-  type RefObject,
-  type FC,
-  useState,
-  useEffect,
-  type FormEvent,
-} from "react";
-import { formatDistanceToNow, isToday, set } from "date-fns";
+import { useRef, useEffect } from "react";
+import type { FC, FormEvent, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Markdown from "react-markdown";
 import type { Literal, Parent, Node } from "unist";
@@ -23,18 +19,14 @@ import {
 import { useStore } from "@nanostores/react";
 
 type TodoDialogProps = {
-  todo: Todo | null;
-  onClose: () => void;
-  dialogRef: RefObject<HTMLDialogElement>;
+  todo: Todo;
+  setSelectedTodo: Dispatch<SetStateAction<Todo | null>>;
 };
 
-export const TodoDialog: FC<TodoDialogProps> = ({
-  todo,
-  onClose,
-  dialogRef,
-}) => {
+export const TodoDialog: FC<TodoDialogProps> = ({ todo, setSelectedTodo }) => {
   if (!todo) return null;
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showTitleEditor, setShowTitleEditor] = useState(false);
   const [todoTitle, setTodoTitle] = useState(todo.title);
   const [showDescriptionEditor, setShowDescriptionEditor] = useState(false);
@@ -42,28 +34,37 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
   const filterType = useStore($filterType);
 
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
-    const dialogElement = dialogRef.current;
-
-    function handleCancelEvent() {
-      onClose();
+    if (todo) {
+      showDialog();
     }
+  }, [todo]);
 
-    if (todo && dialogElement) {
-      dialogElement.showModal();
+  const showDialog = (): void => {
+    if (dialogRef.current) {
+      setSelectedTodo(todo);
+      setIsDialogOpen(true);
+      dialogRef.current.showModal();
       document.body.style.overflow = "hidden";
-      dialogElement.addEventListener("cancel", handleCancelEvent);
-    } else if (!todo && dialogElement) {
-      dialogElement.close();
-      document.body.style.overflow = "auto";
-      dialogElement.removeEventListener("cancel", handleCancelEvent);
+      dialogRef.current.addEventListener("cancel", handleCancelEvent);
     }
+  };
 
-    return () => {
-      document.body.style.overflowY = "auto";
-      dialogElement?.removeEventListener("cancel", handleCancelEvent);
-    };
-  }, [todo, dialogRef, onClose]);
+  const closeDialog = (): void => {
+    if (dialogRef.current) {
+      setSelectedTodo(null);
+      setIsDialogOpen(false);
+      dialogRef.current.close();
+      document.body.style.overflow = "auto";
+      dialogRef.current.removeEventListener("cancel", handleCancelEvent);
+    }
+  };
+
+  const handleCancelEvent = (): void => {
+    closeDialog();
+  };
 
   const handleTitleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -118,170 +119,174 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
   return (
     <dialog
+      className={`fixed inset-0 flex items-center justify-center bg-white rounded w-full h-full ${
+        isDialogOpen ? "block" : "hidden"
+      }`}
       ref={dialogRef}
-      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-full rounded-xl overflow-hidden"
-      aria-labelledby="modal-title"
+      onClick={closeDialog}
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-center justify-end pt-3 pr-4">
+      <div
+        className="bg-white p-4 rounded-lg h-full w-full sm:w-1/2 sm:h-5/6 relative"
+        onClick={(event) => event.stopPropagation()}
+      >
         <button
-          onClick={onClose}
-          className="border px-3 py-1 rounded hover:bg-gray-200"
-          title="Close (Esc)"
+          className="absolute top-2 right-2 rounded border px-4 py-3"
+          aria-label="Close"
+          onClick={closeDialog}
         >
-          ✕<span className="sr-only">Close (Esc)</span>
+          ✕
         </button>
-      </div>
-
-      <div className="flex flex-col px-8 gap-y-6">
-        <div className="flex flex-col gap-y-2 border-b max-w-md">
-          {!showTitleEditor && todo.title ? (
-            <button
-              className="text-2xl text-left select-auto"
-              onClick={() => setShowTitleEditor(true)}
-            >
-              {todo.title}
-            </button>
-          ) : (
-            <form
-              className="flex flex-col gap-y-2 max-w-md w-full"
-              onSubmit={(event) => handleTitleSubmit(event)}
-            >
-              <label htmlFor="todoTitle" className="sr-only">
-                Title
-              </label>
-              <textarea
-                name="todoTitle"
-                id="todoTitle"
-                className="border rounded"
-                value={todoTitle}
-                onChange={(event) => setTodoTitle(event.target.value)}
-              ></textarea>
-
+        <div className="flex flex-col gap-y-6">
+          <div className="flex flex-col gap-y-2 border-b max-w-md">
+            {!showTitleEditor && todo.title ? (
               <button
-                type="submit"
-                className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                className="text-2xl text-left select-auto"
+                onClick={() => setShowTitleEditor(true)}
               >
-                Save
+                {todo.title}
               </button>
-            </form>
-          )}
+            ) : (
+              <form
+                className="flex flex-col gap-y-2 max-w-md w-full"
+                onSubmit={(event) => handleTitleSubmit(event)}
+              >
+                <label htmlFor="todoTitle" className="sr-only">
+                  Title
+                </label>
+                <textarea
+                  name="todoTitle"
+                  id="todoTitle"
+                  className="border rounded"
+                  value={todoTitle}
+                  onChange={(event) => setTodoTitle(event.target.value)}
+                ></textarea>
 
-          {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
-            filterType === "today" && (
+                <button
+                  type="submit"
+                  className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                >
+                  Save
+                </button>
+              </form>
+            )}
+
+            {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
+              filterType === "today" && (
+                <p className="text-sm text-gray-700 select-none">
+                  Was in Today{" "}
+                  <span className="font-semibold">
+                    {todo.numberOfTimesMarkedAsToBeDoneToday}
+                  </span>{" "}
+                  times
+                </p>
+              )}
+
+            <p className="text-sm text-gray-700 select-none">
+              {createdTimeAgo} old
+            </p>
+
+            {todo.dateDeleted && (
               <p className="text-sm text-gray-700 select-none">
-                Was in Today{" "}
-                <span className="font-semibold">
-                  {todo.numberOfTimesMarkedAsToBeDoneToday}
-                </span>{" "}
-                times
+                Deleted {deletedTimeAgo} ago
               </p>
             )}
 
-          <p className="text-sm text-gray-700 select-none">
-            {createdTimeAgo} old
-          </p>
+            <div className="flex space-x-4 py-2">
+              {!todo.isDone && (
+                <MarkAsDoneButton
+                  name="MarkAsDoneButton"
+                  todoId={todo.id}
+                  onClose={closeDialog}
+                />
+              )}
 
-          {todo.dateDeleted && (
-            <p className="text-sm text-gray-700 select-none">
-              Deleted {deletedTimeAgo} ago
-            </p>
-          )}
+              {filterType !== "backlog" && (
+                <MoveToBacklogButton
+                  name="Move To Backlog Button"
+                  todoId={todo.id}
+                  onClose={closeDialog}
+                />
+              )}
 
-          <div className="flex space-x-4 py-2">
-            {!todo.isDone && (
-              <MarkAsDoneButton
-                name="MarkAsDoneButton"
-                todoId={todo.id}
-                onClose={onClose}
-              />
-            )}
+              {filterType !== "today" && (
+                <MoveToTodayButton
+                  name="Move to Today Button"
+                  todoId={todo.id}
+                  onClose={closeDialog}
+                />
+              )}
 
-            {filterType !== "backlog" && (
-              <MoveToBacklogButton
-                name="Move To Backlog Button"
-                todoId={todo.id}
-                onClose={onClose}
-              />
-            )}
+              {!todo.dateDeleted && (
+                <SoftDeleteTodoButton todoId={todo.id} onClose={closeDialog} />
+              )}
 
-            {filterType !== "today" && (
-              <MoveToTodayButton
-                name="Move to Today Button"
-                todoId={todo.id}
-                onClose={onClose}
-              />
-            )}
-
-            {!todo.dateDeleted && (
-              <SoftDeleteTodoButton todoId={todo.id} onClose={onClose} />
-            )}
-
-            {todo.dateDeleted && (
-              <HardDeleteSingleDeletedTodoButton
-                todoId={todo.id}
-                onClose={onClose}
-              />
-            )}
-          </div>
-        </div>
-
-        {!showDescriptionEditor && todo.description ? (
-          <>
-            <div className="flex flex-col gap-y-2">
-              <label
-                htmlFor="todoDescription"
-                className="flex flex-col text-sm text-gray-700 select-none"
-              >
-                Notes
-              </label>
-
-              <button
-                onClick={() => setShowDescriptionEditor(true)}
-                className="cursor-pointer rounded max-w-md text-left select-auto"
-                id="todoDescription"
-              >
-                <Markdown
-                  rehypePlugins={[rehypeNewlineToBr]}
-                  className="prose border px-2 py-2 rounded break-words"
-                >
-                  {todo.description}
-                </Markdown>
-              </button>
+              {todo.dateDeleted && (
+                <HardDeleteSingleDeletedTodoButton
+                  todoId={todo.id}
+                  onClose={closeDialog}
+                />
+              )}
             </div>
-          </>
-        ) : (
-          <>
-            <form
-              className="grid grid-cols-1 grid-rows-[1fr_auto] gap-y-2 max-w-md w-full]"
-              onSubmit={(event) => handleDescriptionSubmit(event)}
-            >
-              <label
-                htmlFor="todoDescription"
-                className="flex flex-col text-sm max-h-60 sm:max-h-96 select-none"
-              >
-                Notes
-                <textarea
-                  name="todoDescription"
-                  id="todoDescription"
-                  rows={10}
-                  className="border rounded"
-                  value={todoDescription}
-                  onChange={(event) => setTodoDescription(event.target.value)}
+          </div>
+
+          {!showDescriptionEditor && todo.description ? (
+            <>
+              <div className="flex flex-col gap-y-2">
+                <label
+                  htmlFor="todoDescription"
+                  className="flex flex-col text-sm text-gray-700 select-none"
                 >
-                  {todo.description}
-                </textarea>
-              </label>
-              <button
-                type="submit"
-                className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                  Notes
+                </label>
+
+                <button
+                  onClick={() => setShowDescriptionEditor(true)}
+                  className="cursor-pointer rounded max-w-md text-left select-auto"
+                  id="todoDescription"
+                >
+                  <Markdown
+                    rehypePlugins={[rehypeNewlineToBr]}
+                    className="prose border px-2 py-2 rounded break-words"
+                  >
+                    {todo.description}
+                  </Markdown>
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <form
+                className="flex flex-col gap-y-4 max-w-md w-full"
+                onSubmit={(event) => handleDescriptionSubmit(event)}
               >
-                Save
-              </button>
-            </form>
-          </>
-        )}
+                <label
+                  htmlFor="todoDescription"
+                  className="flex flex-col text-sm max-h-60 sm:max-h-96 select-none"
+                >
+                  Notes
+                  <textarea
+                    name="todoDescription"
+                    id="todoDescription"
+                    rows={10}
+                    className="border rounded"
+                    value={todoDescription}
+                    onChange={(event) => setTodoDescription(event.target.value)}
+                  >
+                    {todo.description}
+                  </textarea>
+                </label>
+                <button
+                  type="submit"
+                  className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                >
+                  Save
+                </button>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </dialog>
   );

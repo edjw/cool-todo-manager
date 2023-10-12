@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import type { FC } from "react";
 import { titleCase } from "title-case";
 import { useStore } from "@nanostores/react";
@@ -26,7 +26,6 @@ import {
 import { TodoDialog } from "./TodoDialog";
 import { TodoItem } from "./TodoItem";
 import { isToday } from "date-fns";
-import { is } from "date-fns/locale";
 
 export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
   const filterType = useStore($filterType);
@@ -132,31 +131,18 @@ export const TodoList: FC = () => {
   // Logging out the current filter"s todos
   console.log(todos);
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   const openDialogWithTodo = (todo: Todo) => {
     setSelectedTodo(todo);
   };
 
-  const closeDialog = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-    setSelectedTodo(null);
-  };
-
-  const [parent, enableAnimations] = useAutoAnimate();
+  const [parent, _enableAnimations] = useAutoAnimate();
 
   return (
     <>
       {selectedTodo && (
-        <TodoDialog
-          todo={selectedTodo}
-          onClose={closeDialog}
-          dialogRef={dialogRef}
-        />
+        <TodoDialog todo={selectedTodo} setSelectedTodo={setSelectedTodo} />
       )}
 
       <div className="flex flex-col gap-y-8">
