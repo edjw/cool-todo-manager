@@ -53,9 +53,8 @@ export const ListSwitcher = () => {
   return (
     <>
       <div
-        className={`
-            flex flex-col-reverse sm:flex-col gap-y-4 fixed bottom-2 right-2 sm:relative sm:bottom-auto sm:left-auto sm:right-auto
-            ${isMenuOpen && "bg-white min-h-[100vh] z-10"}
+        className={`flex flex-col-reverse sm:flex-col gap-y-4 fixed bottom-2 right-2 sm:relative sm:bottom-auto sm:left-auto sm:right-auto
+            ${isMenuOpen && "bg-white min-h-[100vh] left-2 z-10"}
             `}
       >
         <button
