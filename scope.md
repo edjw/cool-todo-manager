@@ -1,7 +1,5 @@
 ## I want this!
-- fix click on menu when not at bottom of window
-- Massive space at the top on narrow screen
-- Add left-0 or whatever to menu only if it’s open
+- Massive space at the top on narrow screen on safari
 
 ## Maybes
 - Keyboard shortcuts

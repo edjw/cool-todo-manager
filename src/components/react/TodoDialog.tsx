@@ -86,6 +86,14 @@ export const TodoDialog: FC<TodoDialogProps> = ({
     locale: enGB,
   });
 
+  const deletedTimeAgo = formatDistanceToNow(
+    todo.dateDeleted ? todo.dateDeleted : 0,
+    {
+      addSuffix: false,
+      locale: enGB,
+    },
+  );
+
   /// Custom rehype plugin to transform newlines to <br/>
   const rehypeNewlineToBr = (tree: Node) => {
     const isParent = (node?: Node): node is Parent =>
@@ -111,7 +119,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
   return (
     <dialog
       ref={dialogRef}
-      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-5/6 rounded-xl"
+      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-full rounded-xl"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -119,7 +127,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
       <div className="flex items-center justify-end pt-3 pr-4">
         <button
           onClick={onClose}
-          className="border px-3 py-2 rounded hover:bg-gray-200"
+          className="border px-3 py-1 rounded hover:bg-gray-200"
           title="Close (Esc)"
         >
           ✕<span className="sr-only">Close (Esc)</span>
@@ -171,6 +179,13 @@ export const TodoDialog: FC<TodoDialogProps> = ({
             )}
 
           <p className="text-sm text-gray-700">{createdTimeAgo} old</p>
+
+          {todo.dateDeleted && (
+            <p className="text-sm text-gray-700">
+              Deleted {deletedTimeAgo} ago
+            </p>
+          )}
+
           <div className="flex space-x-4 py-2">
             <MarkAsDoneButton
               name="MarkAsDoneButton"
@@ -247,10 +262,6 @@ export const TodoDialog: FC<TodoDialogProps> = ({
               </button>
             </form>
           </>
-        )}
-
-        {todo.dateDeleted && (
-          <p>Deleted: {todo.dateDeleted.toLocaleDateString()}</p>
         )}
       </div>
     </dialog>
