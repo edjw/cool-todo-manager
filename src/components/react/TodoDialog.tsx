@@ -134,11 +134,11 @@ export const TodoDialog: FC<TodoDialogProps> = ({
         </button>
       </div>
 
-      <div className="flex flex-col px-8 gap-y-">
+      <div className="flex flex-col px-8 gap-y-6">
         <div className="flex flex-col gap-y-2 border-b max-w-md">
           {!showTitleEditor && todo.title ? (
             <button
-              className="text-2xl text-left"
+              className="text-2xl text-left select-auto"
               onClick={() => setShowTitleEditor(true)}
             >
               {todo.title}
@@ -170,7 +170,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
           {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
             filterType === "today" && (
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 select-none">
                 Was in Today{" "}
                 <span className="font-semibold">
                   {todo.numberOfTimesMarkedAsToBeDoneToday}
@@ -179,10 +179,10 @@ export const TodoDialog: FC<TodoDialogProps> = ({
               </p>
             )}
 
-          <p className="text-sm text-gray-700">{createdTimeAgo} old</p>
+          <p className="text-sm text-gray-700 select-none">{createdTimeAgo} old</p>
 
           {todo.dateDeleted && (
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-gray-700 select-none">
               Deleted {deletedTimeAgo} ago
             </p>
           )}
@@ -214,14 +214,14 @@ export const TodoDialog: FC<TodoDialogProps> = ({
             <div className="flex flex-col gap-y-2">
               <label
                 htmlFor="todoDescription"
-                className="flex flex-col text-sm text-gray-700"
+                className="flex flex-col text-sm text-gray-700 select-none"
               >
                 Notes
               </label>
 
               <button
                 onClick={() => setShowDescriptionEditor(true)}
-                className="cursor-pointer rounded max-w-md text-left"
+                className="cursor-pointer rounded max-w-md text-left select-auto"
                 id="todoDescription"
               >
                 <Markdown
@@ -241,7 +241,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
             >
               <label
                 htmlFor="todoDescription"
-                className="flex flex-col text-sm max-h-60 sm:max-h-96"
+                className="flex flex-col text-sm max-h-60 sm:max-h-96 select-none"
               >
                 Notes
                 <textarea

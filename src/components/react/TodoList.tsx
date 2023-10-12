@@ -133,7 +133,7 @@ export const TodoList: FC = () => {
       )}
 
       <div className="flex flex-col gap-y-8">
-        <h2 className="text-2xl font-semibold pb-1 border-b max-w-xs">
+        <h2 className="text-2xl font-semibold pb-1 border-b max-w-xs select-none">
           {titleCase(filterType)}
         </h2>
 

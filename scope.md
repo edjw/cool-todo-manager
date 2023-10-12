@@ -1,12 +1,5 @@
 ## I want this!
-- allow copy on the button that is the task title in list and dialog and description of the task in dialog
-- notes is too close to the action buttons on dialog
-- look at adding select-none to other elements like title, filter title, etc
-  Cool Todo Manager
-  Today
-  Was in Today 1 times
-  3 minutes old
-  Notes
+
 - sort Today by number of times added to Today
 - sort All to always put done at the bottom and in Today at the top
 - sort backlog to always put items that have  been in today at the top sorted by the most numbers of times in today

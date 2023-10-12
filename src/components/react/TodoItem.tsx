@@ -87,7 +87,7 @@ export const TodoItem: FC<{
       <div className="w-full">
         <button
           onClick={() => openDialogWithTodo(todo)}
-          className={`flex flex-col gap-y-4 w-full justify-start text-left
+          className={`flex flex-col gap-y-4 w-full justify-start text-left select-auto
 
           `}
         >
@@ -96,7 +96,7 @@ export const TodoItem: FC<{
           {!todo.isDone && (
             <>
               {!todo.isDone && (
-                <span className="text-xs text-left">{renderTimeInfo()}</span>
+                <span className="text-xs text-left select-none">{renderTimeInfo()}</span>
               )}
             </>
           )}
