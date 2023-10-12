@@ -27,7 +27,7 @@ export const HardDeleteAllDeletedTodosButton: FC = () => {
         }
       }}
       title="Destroy All Deleted Todos"
-      className="hover:bg-red-600 hover:text-gray-200 border border-gray-200 rounded max-w-[300px]"
+      className="hover:bg-red-600 hover:text-gray-100 border rounded max-w-[300px] py-2"
     >
       Destroy All Deleted Todos
     </button>
@@ -38,7 +38,7 @@ export const SoftDeleteAllDoneTodosButton: FC = () => {
   return (
     <button
       onClick={SoftDeleteAllDoneTodos}
-      className="hover:bg-red-200 hover:text-gray-700  border border-gray-200 rounded max-w-[200px]"
+      className="hover:bg-red-200 border rounded max-w-[200px] py-2"
       title="Delete All Done Todos"
     >
       Delete All Done Todos

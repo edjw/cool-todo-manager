@@ -5,6 +5,7 @@ import type { FC } from "react";
 import { titleCase } from "title-case";
 import type { Todo } from "../../types/TodoType";
 import { TodoActionButtons } from "./TodoList";
+import { capitaliseFirstLetter } from "../../functions/capitaliseFirstLetter";
 
 export const TodoItem: FC<{
   todo: Todo;
@@ -40,7 +41,7 @@ export const TodoItem: FC<{
           <span className="font-semibold">
             {ordinalOfTimesMarkedAsToBeDoneToday}
           </span>{" "}
-          time | {createdTimeAgo} old
+          time | {capitaliseFirstLetter(createdTimeAgo)} old
         </>
       );
     } else {
@@ -65,7 +66,7 @@ export const TodoItem: FC<{
       return (
         <>
           {timesInfo}
-          {createdTimeAgo} old
+          {capitaliseFirstLetter(createdTimeAgo)} old
         </>
       );
     }

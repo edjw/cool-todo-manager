@@ -17,6 +17,7 @@ import {
 } from "./Buttons";
 
 import { useStore } from "@nanostores/react";
+import { capitaliseFirstLetter } from "../../functions/capitaliseFirstLetter";
 
 type TodoDialogProps = {
   todo: Todo;
@@ -119,8 +120,8 @@ export const TodoDialog: FC<TodoDialogProps> = ({ todo, setSelectedTodo }) => {
 
   return (
     <dialog
-      className={`fixed inset-0 flex items-center justify-center bg-white rounded w-full h-full ${
-        isDialogOpen ? "block" : "hidden"
+      className={`fixed inset-0 flex items-center justify-center bg-gray-300/40 rounded-3xl w-full h-full ${
+        isDialogOpen ? "block cursor-zoom-out" : "hidden"
       }`}
       ref={dialogRef}
       onClick={closeDialog}
@@ -128,18 +129,18 @@ export const TodoDialog: FC<TodoDialogProps> = ({ todo, setSelectedTodo }) => {
       aria-modal="true"
     >
       <div
-        className="bg-white p-4 rounded-lg h-full w-full sm:w-1/2 sm:h-5/6 relative"
+        className="bg-white p-4 rounded-lg h-full w-full sm:w-2/3 sm:h-5/6 relative border cursor-auto"
         onClick={(event) => event.stopPropagation()}
       >
         <button
-          className="absolute top-2 right-2 rounded border px-4 py-3"
+          className="absolute top-4 right-4 rounded border px-4 py-3 hover:bg-gray-200"
           aria-label="Close"
           onClick={closeDialog}
         >
           ✕
         </button>
         <div className="flex flex-col gap-y-6">
-          <div className="flex flex-col gap-y-2 border-b max-w-md">
+          <div className="flex flex-col gap-y-4 border-b max-w-md">
             {!showTitleEditor && todo.title ? (
               <button
                 className="text-2xl text-left select-auto"
@@ -165,33 +166,36 @@ export const TodoDialog: FC<TodoDialogProps> = ({ todo, setSelectedTodo }) => {
 
                 <button
                   type="submit"
-                  className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                  className="border rounded-lg px-2 py-1 hover:bg-gray-200 max-w-[200px]"
                 >
-                  Save
+                  <span>Save</span>
                 </button>
               </form>
             )}
 
-            {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
-              filterType === "today" && (
+            <div className="flex flex-col gap-y-2">
+              {todo.numberOfTimesMarkedAsToBeDoneToday > 0 &&
+                filterType === "today" && (
+                  <p className="text-sm text-gray-700 select-none">
+                    Was in Today{" "}
+                    <span className="font-semibold">
+                      {todo.numberOfTimesMarkedAsToBeDoneToday}
+                    </span>{" "}
+                    {todo.numberOfTimesMarkedAsToBeDoneToday === 1
+                      ? "time"
+                      : "times"}
+                  </p>
+                )}
+
+              <p className="text-sm text-gray-700 select-none">
+                {capitaliseFirstLetter(createdTimeAgo)} old
+              </p>
+              {todo.dateDeleted && (
                 <p className="text-sm text-gray-700 select-none">
-                  Was in Today{" "}
-                  <span className="font-semibold">
-                    {todo.numberOfTimesMarkedAsToBeDoneToday}
-                  </span>{" "}
-                  times
+                  Deleted {deletedTimeAgo} ago
                 </p>
               )}
-
-            <p className="text-sm text-gray-700 select-none">
-              {createdTimeAgo} old
-            </p>
-
-            {todo.dateDeleted && (
-              <p className="text-sm text-gray-700 select-none">
-                Deleted {deletedTimeAgo} ago
-              </p>
-            )}
+            </div>
 
             <div className="flex space-x-4 py-2">
               {!todo.isDone && (
@@ -279,9 +283,9 @@ export const TodoDialog: FC<TodoDialogProps> = ({ todo, setSelectedTodo }) => {
                 </label>
                 <button
                   type="submit"
-                  className="border rounded px-2 py-1 hover:bg-gray-200 max-w-[200px]"
+                  className="border rounded-lg px-2 py-1 hover:bg-gray-200 max-w-[200px]"
                 >
-                  Save
+                  <span>Save</span>
                 </button>
               </form>
             </>
