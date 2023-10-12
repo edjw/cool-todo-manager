@@ -10,14 +10,6 @@ export const TodoItem: FC<{
   todo: Todo;
   openDialogWithTodo: (todo: Todo) => void;
 }> = ({ todo, openDialogWithTodo }) => {
-  const todoTitleElement = todo.isDone ? (
-    <>
-      <s>{todo.title}</s>
-    </>
-  ) : (
-    todo.title
-  );
-
   const createdTimeAgo = formatDistanceToNow(todo.dateCreated, {
     addSuffix: false,
     locale: enGB,
@@ -93,8 +85,7 @@ export const TodoItem: FC<{
 
           `}
         >
-          {todoTitleElement}
-
+          todo.title
           {!todo.isDone && (
             <>
               {!todo.isDone && (
