@@ -2,6 +2,7 @@
 - Massive space at the top on narrow screen on safari
 
 ## Maybes
+- there's maybe some issue about thinking todos that were marked today but are no longer marked today are actually today but i'm not sure
 - some interface for allowing notes to be added at creation time?
 - Keyboard shortcuts
 - Button to change the order of by date created, number of times added to today, or number of times added to backlog

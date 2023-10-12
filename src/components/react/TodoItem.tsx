@@ -82,7 +82,9 @@ export const TodoItem: FC<{
   return (
     <li
       key={todo.id}
-      className="flex gap-x-4 items-center justify-between border-b pb-2"
+      className={`flex gap-x-4 items-center justify-between border-b py-2 ${
+        todo.isDone && "opacity-40"
+      }`}
     >
       <div className="w-full">
         <button
@@ -96,7 +98,9 @@ export const TodoItem: FC<{
           {!todo.isDone && (
             <>
               {!todo.isDone && (
-                <span className="text-xs text-left select-none">{renderTimeInfo()}</span>
+                <span className="text-xs text-left select-none">
+                  {renderTimeInfo()}
+                </span>
               )}
             </>
           )}
