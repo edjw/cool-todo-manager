@@ -8,14 +8,60 @@ import { z } from "zod";
 
 const TodosSchemaForJSON = z.array(TodoSchemaForJSON);
 
+export const transformTitle = (title: string) => {
+  const removeMultipleSpaces = (str: string) => str.replace(/\s+/g, " ");
+  const removeMultipleNewLines = (str: string) => str.replace(/\n+/g, "\n");
+  const removeLeadingTrailingSpacesEachLine = (str: string) =>
+    str.replace(/^\s+|\s+$/gm, "");
+  const trim = (str: string) => str.trim();
+  const capitaliseFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
+  const transformers = [
+    removeMultipleSpaces,
+    removeMultipleNewLines,
+    removeLeadingTrailingSpacesEachLine,
+    trim,
+    capitaliseFirstLetter,
+  ];
+  return transformers.reduce((acc, transformer) => transformer(acc), title);
+};
+
+export const transformDescription = (desc: string) => {
+  const removeMultipleIntraLineSpaces = (str: string) =>
+    str
+      .split("\n")
+      .map((line) => line.replace(/\s+/g, " "))
+      .join("\n"); // remove multiple spaces in each line
+  const removeLeadingTrailingSpacesEachLine = (str: string) =>
+    str.replace(/^\s+|\s+$/gm, ""); // Removes spaces around the ends of each line.
+  const trim = (str: string) => str.trim(); // Removes spaces around the ends of the entire string.
+  const addMarkdownLineBreaks = (str: string) => str.replace(/\n/g, "  \n"); // Add line breaks to single line breaks for Markdown
+
+  const transformers = [
+    removeMultipleIntraLineSpaces,
+    removeLeadingTrailingSpacesEachLine,
+    addMarkdownLineBreaks,
+    trim,
+  ];
+  return transformers.reduce((acc, transformer) => transformer(acc), desc);
+};
+
 export const $todos = persistentAtom<Todo[]>("todos", [], {
   encode: (todos: Todo[]) => {
-    const todosAsStrings = todos.map((todo) => ({
-      ...todo,
-      dateCreated: todo.dateCreated.toISOString(),
-      dateDeleted: todo.dateDeleted?.toISOString(),
-      dateMarkedAsToBeDoneToday: todo.dateMarkedAsToBeDoneToday?.toISOString(),
-    }));
+    const todosAsStrings = todos.map((todo) => {
+      return {
+        ...todo,
+        title: transformTitle(todo.title),
+        description: transformDescription(todo.description),
+        dateCreated: todo.dateCreated.toISOString(),
+        dateDeleted: todo.dateDeleted?.toISOString(),
+        dateMarkedAsToBeDoneToday:
+          todo.dateMarkedAsToBeDoneToday?.toISOString(),
+      };
+    });
+
     const result = TodosSchemaForJSON.safeParse(todosAsStrings);
     if (result.success) {
       return JSON.stringify(result.data);

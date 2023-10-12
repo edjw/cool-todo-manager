@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import type { FC, FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import { $filterType, addTodo } from "../../stores/store";
+import { $filterType, addTodo, transformTitle } from "../../stores/store";
 
 export const TodoInput: FC = () => {
   const [toBeDoneToday, setToBeDoneToday] = useState(false);
@@ -26,7 +26,7 @@ export const TodoInput: FC = () => {
     }
     addTodo({
       id: uuidv4(),
-      title: inputValue,
+      title: transformTitle(inputValue),
       description: "",
       dateCreated: new Date(),
       isDone: false,

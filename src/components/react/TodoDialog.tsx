@@ -5,11 +5,12 @@ import {
   useEffect,
   type FormEvent,
 } from "react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, set } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Markdown from "react-markdown";
+import type { Literal, Parent, Node } from "unist";
 
-import { updateTodo, $filterType } from "../../stores/store";
+import { updateTodo, $filterType, transformTitle } from "../../stores/store";
 import type { Todo } from "../../types/TodoType";
 import {
   HardDeleteSingleDeletedTodoButton,
@@ -66,8 +67,10 @@ export const TodoDialog: FC<TodoDialogProps> = ({
 
   const handleTitleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    updateTodo({ ...todo, title: todoTitle });
-    todo.title = todoTitle;
+    const transformedTitle = transformTitle(todoTitle);
+    updateTodo({ ...todo, title: transformedTitle });
+    todo.title = transformedTitle;
+    setTodoTitle(transformedTitle);
     setShowTitleEditor(false);
   };
 
@@ -82,6 +85,28 @@ export const TodoDialog: FC<TodoDialogProps> = ({
     addSuffix: false,
     locale: enGB,
   });
+
+  /// Custom rehype plugin to transform newlines to <br/>
+  const rehypeNewlineToBr = (tree: Node) => {
+    const isParent = (node?: Node): node is Parent =>
+      node != null && "children" in node;
+    const isLiteral = (node?: Node): node is Literal =>
+      node != null && "value" in node;
+
+    function visit(node: Node) {
+      if (isLiteral(node)) {
+        if (typeof node.value === "string") {
+          node.value = node.value.replace(/\n/g, "<br />");
+        }
+      }
+
+      if (isParent(node)) {
+        node.children.forEach(visit);
+      }
+    }
+
+    visit(tree);
+  };
 
   return (
     <dialog
@@ -183,7 +208,10 @@ export const TodoDialog: FC<TodoDialogProps> = ({
                 className="cursor-pointer rounded max-w-md text-left"
                 id="todoDescription"
               >
-                <Markdown className="prose border px-2 py-2 rounded break-words">
+                <Markdown
+                  rehypePlugins={[rehypeNewlineToBr]}
+                  className="prose border px-2 py-2 rounded break-words"
+                >
                   {todo.description}
                 </Markdown>
               </button>

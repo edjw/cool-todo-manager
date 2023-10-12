@@ -1,4 +1,8 @@
 ## I want this!
+- Cleanup text of a todo automatically. Capitalise first word. Change spaces more than 1 to just 1 and new lines more than 1 to just 1
+- Add autoanimate
+- Massive space at the top on narrow screen
+- Add left-0 or whatever to menu only if it’s open
 
 ## Maybes
 - Keyboard shortcuts
