@@ -85,7 +85,7 @@ export const TodoItem: FC<{
 
           `}
         >
-          todo.title
+          {todo.title}
           {!todo.isDone && (
             <>
               {!todo.isDone && (

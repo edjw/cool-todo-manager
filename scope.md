@@ -1,5 +1,6 @@
 ## I want this!
 - Massive space at the top on narrow screen on safari
+- make a local backup of the json on every load?
 
 ## Maybes
 - there's maybe some issue about thinking todos that were marked today but are no longer marked today are actually today but i'm not sure
