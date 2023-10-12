@@ -36,7 +36,10 @@ export const TodoInput: FC = () => {
     });
 
     setInputValue("");
-    setToBeDoneToday(false);
+
+    if (filterType !== "today") {
+      setToBeDoneToday(false);
+    }
   };
 
   return (
