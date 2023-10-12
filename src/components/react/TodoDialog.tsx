@@ -119,7 +119,7 @@ export const TodoDialog: FC<TodoDialogProps> = ({
   return (
     <dialog
       ref={dialogRef}
-      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-full rounded-xl"
+      className="fixed z-10 inset-0 bg-white w-2/3 min-w-fit max-w-xl h-full rounded-xl overflow-hidden"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -133,7 +133,8 @@ export const TodoDialog: FC<TodoDialogProps> = ({
           ✕<span className="sr-only">Close (Esc)</span>
         </button>
       </div>
-      <div className="flex flex-col px-8 py-4 gap-y-8">
+
+      <div className="flex flex-col px-8 gap-y-">
         <div className="flex flex-col gap-y-2 border-b max-w-md">
           {!showTitleEditor && todo.title ? (
             <button
@@ -235,12 +236,12 @@ export const TodoDialog: FC<TodoDialogProps> = ({
         ) : (
           <>
             <form
-              className="flex flex-col gap-y-2 max-w-md w-full"
+              className="grid grid-cols-1 grid-rows-[1fr_auto] gap-y-2 max-w-md w-full]"
               onSubmit={(event) => handleDescriptionSubmit(event)}
             >
               <label
                 htmlFor="todoDescription"
-                className="flex flex-col text-sm"
+                className="flex flex-col text-sm max-h-60 sm:max-h-96"
               >
                 Notes
                 <textarea
