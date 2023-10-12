@@ -229,6 +229,7 @@ export const MoveToTodayButton: FC<{
           className="w-6 h-6"
         >
           <text
+            className="select-none"
             x="10"
             y="12"
             textAnchor="middle"
