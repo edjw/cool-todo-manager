@@ -10,7 +10,7 @@ const Main = () => {
   return (
     <>
       <main
-        className={`grid grid-cols-1 sm:grid-cols-[auto_1fr] h-full gap-x-20 gap-y-8 relative`}
+        className={`grid grid-cols-1 sm:grid-rows-[auto_1fr] h-full gap-x-20 gap-y-8 relative`}
       >
         <aside className={`flex flex-col gap-y-8`}>
           <ListSwitcher />
