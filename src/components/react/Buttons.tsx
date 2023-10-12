@@ -215,7 +215,8 @@ export const UnmarkAsDoneButton: FC<{
 export const MoveToTodayButton: FC<{
   todoId: string;
   onClose?: () => void;
-}> = ({ todoId, onClose }) => {
+  name: string;
+}> = ({ todoId, onClose, name }) => {
   const MoveToTodaySVG = () => {
     const todayDate = getDate(new Date());
 
@@ -268,7 +269,8 @@ export const MoveToTodayButton: FC<{
 export const MoveToBacklogButton: FC<{
   todoId: string;
   onClose?: () => void;
-}> = ({ todoId, onClose }) => {
+  name: string;
+}> = ({ todoId, onClose, name }) => {
   const MoveToBacklogSVG = () => {
     return (
       <>

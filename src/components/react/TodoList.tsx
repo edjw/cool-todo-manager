@@ -25,6 +25,7 @@ import {
 } from "../../stores/store";
 import { TodoDialog } from "./TodoDialog";
 import { TodoItem } from "./TodoItem";
+import { isToday } from "date-fns";
 
 export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
   const filterType = useStore($filterType);
@@ -33,30 +34,30 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
   const buttonMap = {
     done: [
       <SoftDeleteTodoButton todoId={todoId} />,
-      <MoveToBacklogButton todoId={todoId} />,
-      <MoveToTodayButton todoId={todoId} />,
+      <MoveToBacklogButton name="MoveToBacklogButton" todoId={todoId} />,
+      <MoveToTodayButton name="MoveToTodayButton" todoId={todoId} />,
     ],
     deleted: [
-      <MoveToBacklogButton todoId={todoId} />,
-      <MoveToTodayButton todoId={todoId} />,
+      <MoveToBacklogButton name="MoveToBacklogButton" todoId={todoId} />,
+      <MoveToTodayButton name="MoveToTodayButton" todoId={todoId} />,
       <HardDeleteSingleDeletedTodoButton todoId={todoId} />,
     ],
     backlog: [
-      <MoveToTodayButton todoId={todoId} />,
+      <MoveToTodayButton name="MoveToTodayButton" todoId={todoId} />,
       <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
       <SoftDeleteTodoButton todoId={todoId} />,
     ],
     today: [
       <UnmarkAsDoneButton name="UnmarkAsDoneButton" todoId={todoId} />,
       <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
-      <MoveToBacklogButton todoId={todoId} />,
+      <MoveToBacklogButton name="MoveToBacklogButton" todoId={todoId} />,
       <SoftDeleteTodoButton todoId={todoId} />,
     ],
     all: [
       <UnmarkAsDoneButton name="UnmarkAsDoneButton" todoId={todoId} />,
       <MarkAsDoneButton name="MarkAsDoneButton" todoId={todoId} />,
-      <MoveToBacklogButton todoId={todoId} />,
-      <MoveToTodayButton todoId={todoId} />,
+      <MoveToBacklogButton name="MoveToBacklogButton" todoId={todoId} />,
+      <MoveToTodayButton name="MoveToTodayButton" todoId={todoId} />,
       <SoftDeleteTodoButton todoId={todoId} />,
     ],
   };
@@ -71,6 +72,22 @@ export const TodoActionButtons: FC<{ todo: Todo }> = ({ todo }) => {
         }
 
         if (button.props.name === "UnmarkAsDoneButton" && !todo.isDone) {
+          return null;
+        }
+
+        if (
+          button.props.name === "MoveToTodayButton" &&
+          todo.dateMarkedAsToBeDoneToday &&
+          isToday(todo.dateMarkedAsToBeDoneToday)
+        ) {
+          return null;
+        }
+
+        if (
+          button.props.name === "MoveToBacklogButton" &&
+          todo.dateMarkedAsToBeDoneToday &&
+          !isToday(todo.dateMarkedAsToBeDoneToday)
+        ) {
           return null;
         }
 
