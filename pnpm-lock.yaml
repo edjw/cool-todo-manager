@@ -17,6 +17,9 @@ dependencies:
   '@astrojs/tailwind':
     specifier: ^5.0.1
     version: 5.0.1(astro@3.2.3)(tailwindcss@3.3.3)
+  '@formkit/auto-animate':
+    specifier: ^0.8.0
+    version: 0.8.0
   '@nanostores/persistent':
     specifier: ^0.9.1
     version: 0.9.1(nanostores@0.9.3)
@@ -1897,6 +1900,10 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@formkit/auto-animate@0.8.0:
+    resolution: {integrity: sha512-G8f7489ka0mWyi+1IEZT+xgIwcpWtRMmE2x+IrVoQ+KM1cP6VDj/TbujZjwxdb0P8w8b16/qBfViRmydbYHwMw==}
+    dev: false
 
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}

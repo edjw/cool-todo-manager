@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { FC } from "react";
 import { titleCase } from "title-case";
 import { useStore } from "@nanostores/react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 import {
   MarkAsDoneButton,
@@ -119,6 +120,8 @@ export const TodoList: FC = () => {
     setSelectedTodo(null);
   };
 
+  const [parent, enableAnimations] = useAutoAnimate();
+
   return (
     <>
       {selectedTodo && (
@@ -136,7 +139,7 @@ export const TodoList: FC = () => {
 
         {todos.length === 0 && <p>Nothing here</p>}
 
-        <ul className="flex flex-col gap-y-12 max-w-3xl">
+        <ul ref={parent} className="flex flex-col gap-y-12 max-w-3xl">
           {todos.map((todo) => (
             <TodoItem
               key={todo.id}

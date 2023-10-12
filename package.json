@@ -15,6 +15,7 @@
     "@astrojs/netlify": "^3.0.2",
     "@astrojs/react": "^3.0.3",
     "@astrojs/tailwind": "^5.0.1",
+    "@formkit/auto-animate": "^0.8.0",
     "@nanostores/persistent": "^0.9.1",
     "@nanostores/react": "^0.7.1",
     "@types/react": "^18.0.21",
