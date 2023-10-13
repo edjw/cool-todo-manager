@@ -15,7 +15,6 @@ const downloadBackup = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     const date = formatDate(new Date());
-    console.log(navigator); // temp for working out details on sonoma webapp versus Safari. Can you tell the difference?
     a.href = url;
     a.download = `cool-todo-manager-backup_${date}.json`;
     document.body.appendChild(a);
