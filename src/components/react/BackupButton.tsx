@@ -8,18 +8,29 @@ function formatDate(date: Date): string {
   return `${year}-M${month}-D${day}_H${hours}-M${minutes}-S${seconds}`;
 }
 
-const downloadBackup = () => {
-  const storedData = localStorage.getItem("todos");
+const downloadBackupAsJSON = ({
+  key = "todos",
+  outputFilename = "cool-todo-manager-backup",
+  useDate = true,
+}: {
+  key?: string;
+  outputFilename?: string;
+  useDate?: boolean;
+} = {}) => {
+  const storedData = localStorage.getItem(key);
   if (storedData) {
     const blob = new Blob([storedData], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     const date = formatDate(new Date());
     a.href = url;
-    a.download = `cool-todo-manager-backup_${date}.json`;
+    a.download = `${outputFilename}${useDate ? `_${date}` : ""}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Free up blob memory
+  } else {
+    console.error(`No data found in the ${key} key localStorage for backup.`);
   }
 };
 
@@ -28,7 +39,7 @@ export const BackupButton = () => {
     <>
       <div>
         <button
-          onClick={downloadBackup}
+          onClick={() => downloadBackupAsJSON()}
           className="border rounded px-4 py-2 max-w-[150px]"
         >
           Backup Todos

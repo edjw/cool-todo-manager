@@ -1,6 +1,6 @@
 ## I want this!
 - Massive space at the top on narrow screens
-- make a local backup of the json on every load?
+- make a local backup of the json on every load? to where? can it be done automatically without user input?
 
 ## Maybes
 - markdown formatting bar with keyboard shortcuts for notes

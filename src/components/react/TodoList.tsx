@@ -150,7 +150,7 @@ export const TodoList: FC = () => {
           {titleCase(filterType)}
         </h2>
 
-        {todos.length === 0 && <p>Nothing here</p>}
+        {todos.length === 0 && <p className="select-none">Nothing here</p>}
 
         <ul ref={parent} className="flex flex-col gap-y-12 max-w-3xl">
           {todos.map((todo) => (

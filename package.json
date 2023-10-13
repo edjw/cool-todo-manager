@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "dev_host": "astro dev --host",
     "check": "astro check",
     "start": "astro dev",
     "build": "astro build",
