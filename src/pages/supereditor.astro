@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TodoSuperEditor from "../react-islands/_SuperEditor.tsx";
+---
+
+<Layout title="Super Editor – Cool Todo Manager">
+  <main>
+    <TodoSuperEditor client:only="react" />
+  </main>
+</Layout>
