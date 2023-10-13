@@ -1,11 +1,23 @@
+function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  return `${year}-M${month}-D${day}_H${hours}-M${minutes}-S${seconds}`;
+}
+
 const downloadBackup = () => {
   const storedData = localStorage.getItem("todos");
   if (storedData) {
     const blob = new Blob([storedData], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
+    const date = formatDate(new Date());
+    console.log(navigator); // temp for working out details on sonoma webapp versus Safari. Can you tell the difference?
     a.href = url;
-    a.download = "backup.json";
+    a.download = `cool-todo-manager-backup_${date}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
