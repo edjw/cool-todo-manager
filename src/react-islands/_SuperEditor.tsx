@@ -30,9 +30,10 @@ const TodoSuperEditor = () => {
                     className="flex flex-col gap-y-1 text-sm"
                   >
                     Title
-                    <input
+                    <textarea
                       type="text"
                       name="title"
+                      rows={2}
                       defaultValue={todo.title}
                       onChange={(event) => {
                         updateTodo({
@@ -49,6 +50,7 @@ const TodoSuperEditor = () => {
                     Description
                     <textarea
                       name="description"
+                      rows={5}
                       defaultValue={todo.description}
                       onChange={(event) => {
                         updateTodo({
