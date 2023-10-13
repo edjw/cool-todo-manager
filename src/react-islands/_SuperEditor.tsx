@@ -31,7 +31,6 @@ const TodoSuperEditor = () => {
                   >
                     Title
                     <textarea
-                      type="text"
                       name="title"
                       rows={2}
                       defaultValue={todo.title}
@@ -43,7 +42,9 @@ const TodoSuperEditor = () => {
                       }}
                     />
                   </label>
-                  <label
+
+                  {/* Todo: make this so it uses markdown like the dialog */}
+                  {/* <label
                     htmlFor="description"
                     className="flex flex-col gap-y-1 text-sm"
                   >
@@ -59,7 +60,7 @@ const TodoSuperEditor = () => {
                         });
                       }}
                     />
-                  </label>
+                  </label> */}
 
                   <label
                     htmlFor="dateCreated"
