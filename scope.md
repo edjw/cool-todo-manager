@@ -2,6 +2,7 @@
 - fix massive space at the top on narrow screens
 - overlapping long title onto dialog close button
 - overlapping long text out of bottom of dialog
+- mobile menu close button move up and left and check on mobile
 
 ## Maybes
 - a local backup of the json on every load? to where? can it be done automatically without user input?
