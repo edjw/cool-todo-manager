@@ -1,5 +1,8 @@
 ## I want this!
+- save notes when click away from the editor
+- on dialog, a very long note overflows
 - Massive space at the top on narrow screens
+- In menu,only show number of tasks that aren't done
 - make a local backup of the json on every load? to where? can it be done automatically without user input?
 
 ## Maybes
