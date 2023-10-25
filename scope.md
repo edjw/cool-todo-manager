@@ -1,11 +1,14 @@
 ## I want this!
 - save notes when click away from the editor
 - on dialog, a very long note overflows
-- Massive space at the top on narrow screens
+- fix massive space at the top on narrow screens
 - In menu,only show number of tasks that aren't done
-- make a local backup of the json on every load? to where? can it be done automatically without user input?
+- overlapping long title onto dialog close button
+- overlapping long text out of bottom of dialog
+- mobile menu close button move up and left and check on mobile standalonr
 
 ## Maybes
+- a local backup of the json on every load? to where? can it be done automatically without user input?
 - markdown formatting bar with keyboard shortcuts for notes
 - there's maybe some issue about thinking todos that were marked today but are no longer marked today are actually today but i'm not sure
 - some interface for allowing notes to be added at creation time?
