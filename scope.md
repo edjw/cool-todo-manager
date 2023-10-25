@@ -1,8 +1,10 @@
 ## I want this!
-- Massive space at the top on narrow screens
-- make a local backup of the json on every load? to where? can it be done automatically without user input?
+- fix massive space at the top on narrow screens
+- overlapping long title onto dialog close button
+- overlapping long text out of bottom of dialog
 
 ## Maybes
+- a local backup of the json on every load? to where? can it be done automatically without user input?
 - markdown formatting bar with keyboard shortcuts for notes
 - there's maybe some issue about thinking todos that were marked today but are no longer marked today are actually today but i'm not sure
 - some interface for allowing notes to be added at creation time?
