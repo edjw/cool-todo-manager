@@ -2,7 +2,7 @@
 - save notes when click away from the editor
 - on dialog, a very long note overflows
 - fix massive space at the top on narrow screens
-- In menu,only show number of tasks that aren't done
+- In menu, only show number of tasks that aren't done
 - overlapping long title onto dialog close button
 - overlapping long text out of bottom of dialog
 - mobile menu close button move up and left and check on mobile standalonr
